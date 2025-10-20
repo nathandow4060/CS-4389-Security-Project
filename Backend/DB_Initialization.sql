@@ -2,10 +2,10 @@ CREATE ROLE admin LOGIN PASSWORD '18BzeQ2yuOP96342!';
 
 CREATE TABLE ACCOUNT(
 	id BIGSERIAL PRIMARY KEY,
-	username TEXT NOT NULL,
+	username TEXT UNIQUE NOT NULL,
 	password TEXT NOT NULL,
 	age INTEGER NOT NULL,
-	email TEXT NOT NULL
+	email TEXT UNIQUE NOT NULL 
 );
 
 CREATE TABLE PRODUCT(
@@ -24,9 +24,9 @@ CREATE TABLE USER_WISHLIST(
 	user_id BIGINT,
 	product_id BIGINT,
 	date_added TEXT,
-	rank INTEGER,
-	FOREIGN KEY (user_id) REFERENCES account(id),
-	FOREIGN KEY (product_id) REFERENCES product(id)
+	rank INTEGER UNIQUE,
+	FOREIGN KEY (user_id) REFERENCES account(id) ON DELETE CASCADE,
+	FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
 );
 
 CREATE TABLE WEBPAGE_CONTENT(
@@ -46,7 +46,7 @@ VALUES
 ('6897', 'Megabonk', 'vedinad', '$9.99', 'Megabonk is a roguelike survival game where you must fight your way through hordes of enemies and bosses in randomly generated maps. Grab loot on the way, level up your character, upgrade your weapons and survive for as long as you can! How far can you make it?', 'none');
 
 INSERT INTO user_wishlist (user_id, product_id, date_added, rank)
-VALUES (1, 1, '10/19/2025', 1);
+VALUES (2, 1, '10/19/2025', 1);
 
 --VIEW TABLE RECORDS
 SELECT * FROM account;
@@ -59,9 +59,18 @@ UPDATE TABLE
 SET column = value
 where condition;
 
+--MODFY TABLE STRUCTURE
+ALTER TABLE table
+ADD CONSTRAINT CONST_NAME CONSTRAINT FIELD(S);
+
 --DELETE FROM RECORD
 DELETE FROM TABLE
 WHERE condition;
+
+DELETE FROM ACCOUNT
+WHERE ID = 1;
+
+
 
 
 
