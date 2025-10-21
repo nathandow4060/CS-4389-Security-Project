@@ -1,0 +1,26 @@
+{
+  "name": "webstore_backend",
+  "version": "1.0.0",
+  "description": "Backend for our online game key store.",
+  "main": "server.js",
+  "scripts": {
+    "devstart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathandow4060/CS-4389-Security-Project.git"
+  },
+  "author": "Ethan McDonell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathandow4060/CS-4389-Security-Project/issues"
+  },
+  "homepage": "https://github.com/nathandow4060/CS-4389-Security-Project#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3"
+  }
+}
