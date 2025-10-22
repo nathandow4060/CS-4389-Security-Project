@@ -1,21 +1,26 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navigation from './components/Navigation';
+import Home from './components/pages/Home';
+import GameDetail from './components/pages/GameDetail';
+import Buy from './components/pages/Buy';
+import Profile from './components/pages/Profile';
+import Login from './components/pages/Login';
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold mb-4 text-purple-500">
-          GameVault
-        </h1>
-        <p className="text-xl text-gray-300">
-          Ayaan's F1 Initialization ✓
-        </p>
-        <div className="mt-8">
-          <button className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition">
-            Get Started
-          </button>
-        </div>
+    <Router>
+      <div className="min-h-screen bg-gray-900">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/games/:id" element={<GameDetail />} />
+          <Route path="/buy" element={<Buy />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
       </div>
-    </div>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
