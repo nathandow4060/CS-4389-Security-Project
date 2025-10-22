@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+
+  <!-- HEADER -->
+  <header class="flex flex-wrap items-center justify-between px-8 py-4 bg-gray-800 shadow-md">
+    <h1 class="text-3xl font-bold text-indigo-400">Game Store</h1>
+    <div class="flex items-center gap-4">
+      <!-- CART BUTTON -->
+      <button id="cartButton" class="relative bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg text-white flex items-center gap-2">
+        🛒 Cart
+        <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+      </button>
+      <!-- ACCOUNT -->
+      <button class="bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-lg text-white">User Account</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="p-8">
+
+    <!-- TOP SELLERS -->
+    <section class="mb-10 relative">
+      <h2 class="text-2xl font-semibold mb-4 text-center">🔥 Top Sellers</h2>
+
+      <div class="relative w-full overflow-hidden rounded-xl shadow-lg">
+        <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
+          <!-- Each Slide -->
+          <div class="min-w-full flex-shrink-0 relative">
+            <img src="https://via.placeholder.com/1200x400?text=Elden+Ring" class="w-full h-64 object-cover">
+            <div class="absolute bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h3 class="text-xl font-semibold">Elden Ring</h3>
+              <p class="text-indigo-400 font-bold">$59.99</p>
+            </div>
+          </div>
+
+          <div class="min-w-full flex-shrink-0 relative">
+            <img src="https://via.placeholder.com/1200x400?text=Starfield" class="w-full h-64 object-cover">
+            <div class="absolute bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h3 class="text-xl font-semibold">Starfield</h3>
+              <p class="text-indigo-400 font-bold">$69.99</p>
+            </div>
+          </div>
+
+          <div class="min-w-full flex-shrink-0 relative">
+            <img src="https://via.placeholder.com/1200x400?text=Spider-Man+2" class="w-full h-64 object-cover">
+            <div class="absolute bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <h3 class="text-xl font-semibold">Spider-Man 2</h3>
+              <p class="text-indigo-400 font-bold">$59.99</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTROLS -->
+        <button id="prev" class="absolute top-1/2 left-4 -translate-y-1/2 bg-gray-800/60 hover:bg-gray-800 text-white rounded-full p-3">
+          &#10094;
+        </button>
+        <button id="next" class="absolute top-1/2 right-4 -translate-y-1/2 bg-gray-800/60 hover:bg-gray-800 text-white rounded-full p-3">
+          &#10095;
+        </button>
+
+        <!-- INDICATORS -->
+        <div id="indicators" class="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          <span class="indicator w-3 h-3 bg-white rounded-full opacity-60"></span>
+          <span class="indicator w-3 h-3 bg-white rounded-full opacity-30"></span>
+          <span class="indicator w-3 h-3 bg-white rounded-full opacity-30"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH BAR -->
+    <div class="flex justify-center mb-8">
+      <input id="searchBar" type="text" placeholder="Search games..." class="w-full max-w-md px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+    </div>
+
+    <!-- CATALOG -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-6 text-center">🎮 Game Catalogue</h2>
+      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        <!-- Catalog includes carousel games as well -->
+        <div class="product bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105 cursor-pointer" data-name="Elden Ring" data-price="59.99">
+          <img src="https://via.placeholder.com/300x180?text=Elden+Ring" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-lg font-semibold">Elden Ring</h3>
+            <p class="text-sm text-gray-400">Product ID: 001</p>
+            <p class="text-indigo-400 font-bold mt-2">$59.99</p>
+            <button class="addToCart bg-indigo-600 hover:bg-indigo-700 mt-3 px-3 py-1.5 rounded-lg text-sm font-medium w-full">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105 cursor-pointer" data-name="Starfield" data-price="69.99">
+          <img src="https://via.placeholder.com/300x180?text=Starfield" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-lg font-semibold">Starfield</h3>
+            <p class="text-sm text-gray-400">Product ID: 002</p>
+            <p class="text-indigo-400 font-bold mt-2">$69.99</p>
+            <button class="addToCart bg-indigo-600 hover:bg-indigo-700 mt-3 px-3 py-1.5 rounded-lg text-sm font-medium w-full">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105 cursor-pointer" data-name="Spider-Man 2" data-price="59.99">
+          <img src="https://via.placeholder.com/300x180?text=Spider-Man+2" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-lg font-semibold">Spider-Man 2</h3>
+            <p class="text-sm text-gray-400">Product ID: 003</p>
+            <p class="text-indigo-400 font-bold mt-2">$59.99</p>
+            <button class="addToCart bg-indigo-600 hover:bg-indigo-700 mt-3 px-3 py-1.5 rounded-lg text-sm font-medium w-full">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105 cursor-pointer" data-name="Zelda: Tears of the Kingdom" data-price="69.99">
+          <img src="https://via.placeholder.com/300x180?text=Zelda+Tears+of+the+Kingdom" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-lg font-semibold">Zelda: Tears of the Kingdom</h3>
+            <p class="text-sm text-gray-400">Product ID: 004</p>
+            <p class="text-indigo-400 font-bold mt-2">$69.99</p>
+            <button class="addToCart bg-indigo-600 hover:bg-indigo-700 mt-3 px-3 py-1.5 rounded-lg text-sm font-medium w-full">Add to Cart</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-12 text-center text-gray-500 text-sm py-4 border-t border-gray-700">
+    © 2025 Game Store. All rights reserved.
+  </footer>
+
+  <!-- CART MODAL -->
+  <div id="cartModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+    <div class="bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-4 text-indigo-400">Your Cart</h2>
+      <ul id="cartItems" class="space-y-2 mb-4 max-h-60 overflow-y-auto"></ul>
+      <p id="cartTotal" class="text-lg font-semibold mb-4">Total: $0.00</p>
+      <div class="flex justify-end gap-4">
+        <button id="closeCart" class="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700">Close</button>
+        <button class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // ===== CAROUSEL =====
+    const carousel = document.getElementById('carousel');
+    const slides = carousel.children;
+    const totalSlides = slides.length;
+    const indicators = document.querySelectorAll('.indicator');
+    let currentSlide = 0;
+    let autoSlide;
+
+    const updateCarousel = () => {
+      carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+      indicators.forEach((dot, i) => {
+        dot.classList.toggle('opacity-60', i === currentSlide);
+        dot.classList.toggle('opacity-30', i !== currentSlide);
+      });
+    };
+
+    const nextSlide = () => { currentSlide = (currentSlide + 1) % totalSlides; updateCarousel(); };
+    const prevSlide = () => { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; updateCarousel(); };
+
+    document.getElementById('next').addEventListener('click', () => { nextSlide(); restartAutoSlide(); });
+    document.getElementById('prev').addEventListener('click', () => { prevSlide(); restartAutoSlide(); });
+    indicators.forEach((dot, i) => dot.addEventListener('click', () => { currentSlide = i; updateCarousel(); restartAutoSlide(); }));
+
+    const startAutoSlide = () => autoSlide = setInterval(nextSlide, 4000);
+    const restartAutoSlide = () => { clearInterval(autoSlide); startAutoSlide(); };
+    startAutoSlide();
+
+    // ===== CART =====
+    const cartCount = document.getElementById('cartCount');
+    const addButtons = document.querySelectorAll('.addToCart');
+    const cartModal = document.getElementById('cartModal');
+    const cartItemsList = document.getElementById('cartItems');
+    const cartTotalText = document.getElementById('cartTotal');
+    const closeCartBtn = document.getElementById('closeCart');
+    const cartButton = document.getElementById('cartButton');
+
+    let cart = [];
+
+    addButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const card = button.closest('.product');
+        const name = card.dataset.name;
+        const price = parseFloat(card.dataset.price);
+        cart.push({ name, price });
+        updateCart();
+      });
+    });
+
+    const updateCart = () => {
+      cartItemsList.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between bg-gray-700 rounded-lg px-3 py-2';
+        li.innerHTML = `<span>${item.name}</span><span>$${item.price.toFixed(2)}</span>`;
+        cartItemsList.appendChild(li);
+        total += item.price;
+      });
+      cartTotalText.textContent = `Total: $${total.toFixed(2)}`;
+      cartCount.textContent = cart.length;
+    };
+
+    cartButton.addEventListener('click', () => cartModal.classList.remove('hidden'));
+    closeCartBtn.addEventListener('click', () => cartModal.classList.add('hidden'));
+
+    // ===== SEARCH =====
+    const searchBar = document.getElementById('searchBar');
+    const products = document.querySelectorAll('.product');
+    searchBar.addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      products.forEach(p => {
+        const name = p.dataset.name.toLowerCase();
+        p.style.display = name.includes(term) ? 'block' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>
