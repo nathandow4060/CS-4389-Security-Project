@@ -4,7 +4,8 @@
   "description": "Backend for our online game key store.",
   "main": "server.js",
   "scripts": {
-    "devstart": "nodemon server.js"
+    "devstart": "nodemon server.js",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,7 @@
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3"
-  }
+  },
+  "keywords": [],
+  "type": "commonjs"
 }
