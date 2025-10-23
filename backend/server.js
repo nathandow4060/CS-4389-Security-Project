@@ -13,8 +13,18 @@ app.use(express.json());
 // Register route
 app.use("/api", testRoutes);
 
+app.get("/", (req, res) => {
+  console.log("✅ Root route reached");
+  res.send("Express server is running correctly!");
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 
 //npm i ejs; This is a view engine that can be used to render html
+/*
+http://localhost:8080/
+
+the link above is how to see if the code works.
+*/
