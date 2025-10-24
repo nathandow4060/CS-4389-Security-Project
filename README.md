@@ -12,8 +12,9 @@ npm install -D tailwindcss@3 postcss autoprefixer
 npx tailwindcss init -p
 
 ## How to run front-end code: 
-npm install  
-npm run dev  
+1. Navigate to the root folder of the main branch on the repository
+2. In your code editor of chioce run: npm install  
+3. Then run: npm run dev  
 
 Commands we used: npm install react-router-dom  
 npm install -D tailwindcss@3 postcss autoprefixer  
@@ -23,6 +24,8 @@ Editor: VSCode
 Next steps: We need to add a lot more pages for the front end, create the initial database, test cloud deployment, test the API integration, and ensure everything is connected/runs smoothly.  
 
 ## How to run backend code:
+1. Navigate to the backend folder of the repository in your code editor of choice
+2. Install JS dependencies pg, express, dotenv, cors
 
 
 
