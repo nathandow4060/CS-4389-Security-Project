@@ -11,9 +11,20 @@ npm install react-router-dom
 npm install -D tailwindcss@3 postcss autoprefixer
 npx tailwindcss init -p
 
-Run code in the project Folder: 
-npm install
-npm run dev
+## How to run front-end code: 
+npm install  
+npm run dev  
+
+Commands we used: npm install react-router-dom  
+npm install -D tailwindcss@3 postcss autoprefixer  
+npx tailwindcss init -p  
+OS: Windows 10/11, Mac, Linux  
+Editor: VSCode 
+Next steps: We need to add a lot more pages for the front end, create the initial database, test cloud deployment, test the API integration, and ensure everything is connected/runs smoothly.  
+
+## How to run backend code:
+
+
 
 
 
