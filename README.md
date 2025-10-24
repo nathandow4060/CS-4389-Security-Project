@@ -25,7 +25,11 @@ Next steps: We need to add a lot more pages for the front end, create the initia
 
 ## How to run backend code:
 1. Navigate to the backend folder of the repository in your code editor of choice
-2. Install JS dependencies pg, express, dotenv, cors
+2. Install JS dependencies pg, express, dotenv, cors, morgan, nodemon
+3. Run: npm run devstart
+4. Navigate to http://localhost:5000 to view the backend running in your browser
+
+There is still much to implement here. This is just the framework of the backend system setup.
 
 
 
