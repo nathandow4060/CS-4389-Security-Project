@@ -1,7 +1,8 @@
-// server.js
-require('dotenv').config();
+// server.js - Updated with error handling and logging middleware
+// Note for TEAM: launch with npm run devstart
 const express = require('express');
-const path = require('path');
+const cors = require('cors');
+const dotenv = require('dotenv');
 
 // ===== IMPORT MIDDLEWARE =====
 const { devLogger, prodLogger, requestLogger } = require('./backend/middleware/logger');
@@ -20,6 +21,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // 1. Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors()); //hook up front end API
 
 // 2. Logging middleware
 if (NODE_ENV === 'development') {
@@ -44,9 +46,11 @@ app.get('/', (req, res) => {
 // Hello World route
 app.use('/helloworld', helloworldRouter);
 
-// ===== TEST ROUTES =====
+//Product Routes
+const productRoutes = require('./routes/productRoutes');
+app.use('/products', productRoutes);
 
-// Test operational error (400)
+// Test routes for error handling
 app.get('/test-error', (req, res, next) => {
   next(new AppError('This is a test error - Bad Request', 400));
 });
