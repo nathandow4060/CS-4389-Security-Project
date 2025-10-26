@@ -5,11 +5,10 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 
 // ===== IMPORT MIDDLEWARE =====
-const { devLogger, prodLogger, requestLogger } = require('./backend/middleware/logger');
-const { notFoundHandler, globalErrorHandler, AppError } = require('./backend/middleware/errorHandler');
+const { devLogger, prodLogger, requestLogger } = require('./middleware/logger');
+const { notFoundHandler, globalErrorHandler, AppError } = require('./middleware/errorHandler');
 
 // ===== IMPORT ROUTES =====
-const helloworldRouter = require('./backend/routes/helloworld'); // ✅ matches your folder tree
 
 // ===== INITIALIZE APP =====
 const app = express();
@@ -42,9 +41,6 @@ app.get('/', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
-
-// Hello World route
-app.use('/helloworld', helloworldRouter);
 
 //Product Routes
 const productRoutes = require('./routes/productRoutes');
