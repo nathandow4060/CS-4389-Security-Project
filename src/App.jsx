@@ -1,21 +1,34 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navigation from './components/Navigation';
+import Home from './pages/Home';
+import GamesList from './pages/GamesList';
+import GameDetails from './pages/GameDetails';
+import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
+import Wishlist from './pages/Wishlist';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import NotFound from './pages/NotFound';
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold mb-4 text-purple-500">
-          GameVault
-        </h1>
-        <p className="text-xl text-gray-300">
-          Ayaan's F1 Initialization ✓
-        </p>
-        <div className="mt-8">
-          <button className="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition">
-            Get Started
-          </button>
-        </div>
+    <Router>
+      <div className="min-h-screen bg-gray-900">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/games" element={<GamesList />} />
+          <Route path="/games/:id" element={<GameDetails />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </div>
-    </div>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
