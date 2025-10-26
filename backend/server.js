@@ -1,5 +1,7 @@
 // server.js - Updated with error handling and logging middleware
+// Note for TEAM: launch with npm run devstart
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 
 // Import middleware
@@ -17,6 +19,7 @@ const port = process.env.PORT || 3000;
 // 1. Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors()); //hook up front end API
 
 // 2. Logging middleware
 if (process.env.NODE_ENV === 'development') {
@@ -40,6 +43,10 @@ app.get('/', (req, res) => {
 // Existing route from Ethan
 const helloworldRouter = require('./routes/helloworld');
 app.use('/helloworld', helloworldRouter);
+
+//Product Routes
+const productRoutes = require('./routes/productRoutes');
+app.use('/products', productRoutes);
 
 // Test routes for error handling
 app.get('/test-error', (req, res, next) => {
