@@ -1,10 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import Home from './components/pages/Home';
-import GameDetail from './components/pages/GameDetail';
-import Buy from './components/pages/Buy';
-import Profile from './components/pages/Profile';
-import Login from './components/pages/Login';
+import Home from './pages/Home';
+import GamesList from './pages/GamesList';
+import GameDetails from './pages/GameDetails';
+import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
+import Wishlist from './pages/Wishlist';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -13,10 +17,14 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/games/:id" element={<GameDetail />} />
-          <Route path="/buy" element={<Buy />} />
+          <Route path="/games" element={<GamesList />} />
+          <Route path="/games/:id" element={<GameDetails />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>

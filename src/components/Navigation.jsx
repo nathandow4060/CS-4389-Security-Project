@@ -7,12 +7,14 @@ const Navigation = () => {
         <Link to="/" className="text-2xl font-bold text-purple-500">
           GameVault
         </Link>
-        <div className="flex space-x-4">
+         <div className="flex space-x-4">
           <Link to="/" className="text-gray-300 hover:text-white">Home</Link>
-          <Link to="/games/1" className="text-gray-300 hover:text-white">Games</Link>
-          <Link to="/buy" className="text-gray-300 hover:text-white">Buy</Link>
+          <Link to="/games" className="text-gray-300 hover:text-white">Games</Link>
+          <Link to="/wishlist" className="text-gray-300 hover:text-white">Wishlist</Link>
+          <Link to="/checkout" className="text-gray-300 hover:text-white">Buy</Link>
           <Link to="/profile" className="text-gray-300 hover:text-white">Profile</Link>
           <Link to="/login" className="text-gray-300 hover:text-white">Login</Link>
+          <Link to="/register" className="text-gray-300 hover:text-white">Register</Link>
         </div>
       </div>
     </nav>
