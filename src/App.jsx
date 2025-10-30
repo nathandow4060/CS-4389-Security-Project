@@ -55,43 +55,82 @@ function CartButton({ cart }) {
   );
 }
 
-function UserButton() {
-  const [open, setOpen] = useState(false);
+fufunction UserButton() {
+  const [open, setOpen] = useState(false);        // dropdown toggle
   const [loggedIn, setLoggedIn] = useState(false); // mock login state
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleLogin = () => {
+  // form states
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [registerData, setRegisterData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
+
+  // Mock login/register (no backend yet)
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!loginData.email || !loginData.password) {
+      alert("Please fill out all fields");
+      return;
+    }
     setLoggedIn(true);
+    setUser({ username: loginData.email.split("@")[0], email: loginData.email });
+    setShowLogin(false);
     setOpen(false);
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const { username, email, password, confirm } = registerData;
+    if (!username || !email || !password || !confirm) {
+      alert("Please fill out all fields");
+      return;
+    }
+    if (password !== confirm) {
+      alert("Passwords do not match");
+      return;
+    }
+    setLoggedIn(true);
+    setUser({ username, email });
+    setShowRegister(false);
+    setOpen(false);
+    alert("Registration successful!");
   };
 
   const handleLogout = () => {
     setLoggedIn(false);
+    setUser(null);
     setOpen(false);
   };
 
   return (
     <div className="relative">
-      {/* Account Button */}
+      {/* Main account button */}
       <button
         onClick={() => setOpen((o) => !o)}
         className="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg text-white flex items-center gap-2"
       >
-        👤 Account
+        👤 {loggedIn && user ? user.username : "Account"}
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Dropdown menu */}
       {open && (
         <div className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
           {loggedIn ? (
             <>
               <button
-                onClick={() => setOpen(false)}
+                onClick={() => { alert("Profile page coming soon!"); setOpen(false); }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700 rounded-t-lg"
               >
                 Profile
               </button>
               <button
-                onClick={() => setOpen(false)}
+                onClick={() => { alert("Orders page coming soon!"); setOpen(false); }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700"
               >
                 Orders
@@ -106,13 +145,13 @@ function UserButton() {
           ) : (
             <>
               <button
-                onClick={handleLogin}
+                onClick={() => { setShowLogin(true); setOpen(false); }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700 rounded-t-lg"
               >
                 Log In
               </button>
               <button
-                onClick={() => alert('Registration flow TBD')}
+                onClick={() => { setShowRegister(true); setOpen(false); }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700 rounded-b-lg"
               >
                 Register
@@ -121,9 +160,104 @@ function UserButton() {
           )}
         </div>
       )}
+
+      {/* Login Modal */}
+      {showLogin && (
+        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-sm">
+            <h2 className="text-2xl font-bold mb-4 text-indigo-400">Login</h2>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <input
+                type="email"
+                placeholder="Email"
+                value={loginData.email}
+                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={loginData.password}
+                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowLogin(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white"
+                >
+                  Log In
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Register Modal */}
+      {showRegister && (
+        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-sm">
+            <h2 className="text-2xl font-bold mb-4 text-indigo-400">Register</h2>
+            <form onSubmit={handleRegister} className="space-y-4">
+              <input
+                type="text"
+                placeholder="Username"
+                value={registerData.username}
+                onChange={(e) => setRegisterData({ ...registerData, username: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={registerData.email}
+                onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={registerData.password}
+                onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                value={registerData.confirm}
+                onChange={(e) => setRegisterData({ ...registerData, confirm: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowRegister(false)}
+                  className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white"
+                >
+                  Register
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
 
 
 export default function App() {
