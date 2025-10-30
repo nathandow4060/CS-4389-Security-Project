@@ -55,6 +55,42 @@ function CartButton({ cart }) {
   );
 }
 
+// ✅ New User Account button
+function UserButton() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg text-white flex items-center gap-2"
+      >
+        👤 Account
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-sm">
+            <h2 className="text-2xl font-bold mb-4 text-indigo-400">Your Account</h2>
+            <p className="mb-4 text-gray-300">You are not logged in.</p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setOpen(false)}
+                className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700"
+              >
+                Close
+              </button>
+              <button className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white">
+                Log In
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function App() {
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -93,7 +129,12 @@ export default function App() {
         <h1 className="text-3xl font-bold text-indigo-400">
           <Link to="/">GameHub</Link>
         </h1>
-        <CartButton cart={cart} />
+
+        {/* ✅ Cart and User buttons side-by-side */}
+        <div className="flex items-center gap-4">
+          <CartButton cart={cart} />
+          <UserButton />
+        </div>
       </header>
 
       <main className="p-8">
