@@ -99,7 +99,7 @@ function UserButton() {
     setUser({ username, email });
     setShowRegister(false);
     setOpen(false);
-    alert("Registration successful!");
+    alert("Registration Demo Debug!");
   };
 
   const handleLogout = () => {
