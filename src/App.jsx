@@ -55,7 +55,7 @@ function CartButton({ cart }) {
   );
 }
 
-fufunction UserButton() {
+function UserButton() {
   const [open, setOpen] = useState(false);        // dropdown toggle
   const [loggedIn, setLoggedIn] = useState(false); // mock login state
   const [showLogin, setShowLogin] = useState(false);
