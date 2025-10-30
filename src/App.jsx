@@ -55,41 +55,76 @@ function CartButton({ cart }) {
   );
 }
 
-// ✅ New User Account button
 function UserButton() {
   const [open, setOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false); // mock login state
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+    setOpen(false);
+  };
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setOpen(false);
+  };
 
   return (
-    <>
+    <div className="relative">
+      {/* Account Button */}
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen((o) => !o)}
         className="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg text-white flex items-center gap-2"
       >
         👤 Account
       </button>
 
+      {/* Dropdown Menu */}
       {open && (
-        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-          <div className="bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-sm">
-            <h2 className="text-2xl font-bold mb-4 text-indigo-400">Your Account</h2>
-            <p className="mb-4 text-gray-300">You are not logged in.</p>
-            <div className="flex justify-end gap-4">
+        <div className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
+          {loggedIn ? (
+            <>
               <button
                 onClick={() => setOpen(false)}
-                className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700"
+                className="w-full text-left px-4 py-2 hover:bg-gray-700 rounded-t-lg"
               >
-                Close
+                Profile
               </button>
-              <button className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white">
+              <button
+                onClick={() => setOpen(false)}
+                className="w-full text-left px-4 py-2 hover:bg-gray-700"
+              >
+                Orders
+              </button>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-red-400 hover:bg-gray-700 rounded-b-lg"
+              >
+                Log Out
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleLogin}
+                className="w-full text-left px-4 py-2 hover:bg-gray-700 rounded-t-lg"
+              >
                 Log In
               </button>
-            </div>
-          </div>
+              <button
+                onClick={() => alert('Registration flow TBD')}
+                className="w-full text-left px-4 py-2 hover:bg-gray-700 rounded-b-lg"
+              >
+                Register
+              </button>
+            </>
+          )}
         </div>
       )}
-    </>
+    </div>
   );
 }
+
 
 export default function App() {
   const [cart, setCart] = useState([]);
