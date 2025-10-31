@@ -4,7 +4,7 @@ const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
-export function CartProvider({ children }) {
+export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (game) => {
@@ -20,21 +20,30 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = (id) => {
-    setCart((prev) => {
-      const existing = prev.find((g) => g.id === id);
-      if (!existing) return prev;
-      if (existing.quantity === 1) return prev.filter((g) => g.id !== id);
-      return prev.map((g) =>
-        g.id === id ? { ...g, quantity: g.quantity - 1 } : g
-      );
-    });
+    setCart((prev) =>
+      prev
+        .map((g) => {
+          if (g.id === id) {
+            if (g.quantity > 1) return { ...g, quantity: g.quantity - 1 };
+            return null; // remove completely if quantity is 1
+          }
+          return g;
+        })
+        .filter(Boolean)
+    );
+  };
+
+  const removeAllFromCart = (id) => {
+    setCart((prev) => prev.filter((g) => g.id !== id));
   };
 
   const clearCart = () => setCart([]);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, removeAllFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
-}
+};

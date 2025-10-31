@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx";
 
 export default function CartButton() {
-  const { cart, removeFromCart, removeAllFromCart } = useCart();
   const [open, setOpen] = useState(false);
-
-  const total = cart.reduce((acc, g) => acc + g.price * g.quantity, 0);
+  const { cart, removeFromCart, removeAllFromCart } = useCart();
+  const total = cart.reduce((acc, g) => acc + (g.price * g.quantity || 0), 0);
 
   return (
     <>
@@ -16,68 +15,72 @@ export default function CartButton() {
       >
         🛒 Cart
         <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-          {cart.reduce((sum, g) => sum + g.quantity, 0)}
+          {cart.reduce((acc, g) => acc + g.quantity, 0)}
         </span>
       </button>
 
       {open && (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-          <div className="bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-4 text-indigo-400">Your Cart</h2>
+          <div className="bg-gray-900 p-6 rounded-xl shadow-xl w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4 text-indigo-400 text-center">Your Cart</h2>
 
-            {cart.length ? (
+            {cart.length === 0 ? (
+              <div className="flex flex-col items-center gap-4 text-gray-200">
+                <p className="text-center">Your cart is empty</p>
+                <Link
+                  to="/"
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white"
+                >
+                  ← Back to Home
+                </Link>
+              </div>
+            ) : (
               <>
-                <ul className="space-y-4 max-h-60 overflow-y-auto">
+                <ul className="space-y-2 max-h-60 overflow-y-auto mb-4">
                   {cart.map((item) => (
-                    <li
-                      key={item.id}
-                      className="flex gap-4 items-center bg-gray-700 rounded-lg p-3"
-                    >
-                      <img
-                        src={item.img}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover rounded-lg"
-                      />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-white">{item.name}</h3>
-                        <p className="text-indigo-400 font-bold">
-                          ${item.price} × {item.quantity}
-                        </p>
+                    <li key={item.id} className="flex justify-between items-center bg-gray-800 rounded-lg px-3 py-2">
+                      <div className="flex items-center gap-3">
+                        <img src={item.img} alt={item.name} className="w-12 h-12 object-cover rounded"/>
+                        <div>
+                          <p className="font-semibold">{item.name}</p>
+                          <p className="text-indigo-400 font-bold">${item.price} × {item.quantity}</p>
+                        </div>
                       </div>
-
-                      {item.quantity > 1 ? (
-                        <div className="flex flex-col gap-2">
-                          <button
-                            onClick={() => removeFromCart(item.id)}
-                            className="px-2 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white"
-                          >
-                            Remove One
-                          </button>
+                      <div className="flex flex-col gap-1">
+                        {item.quantity > 1 ? (
+                          <>
+                            <button
+                              onClick={() => removeFromCart(item.id)}
+                              className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded"
+                            >
+                              Remove One
+                            </button>
+                            <button
+                              onClick={() => removeAllFromCart(item.id)}
+                              className="px-2 py-1 bg-red-800 hover:bg-red-900 text-white rounded"
+                            >
+                              Remove All
+                            </button>
+                          </>
+                        ) : (
                           <button
                             onClick={() => removeAllFromCart(item.id)}
-                            className="px-2 py-1 rounded-lg bg-red-800 hover:bg-red-900 text-white"
+                            className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded"
                           >
-                            Remove All
+                            Remove
                           </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => removeAllFromCart(item.id)}
-                          className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white"
-                        >
-                          Remove
-                        </button>
-                      )}
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>
 
-                <p className="text-lg font-semibold mt-4">Total: ${total.toFixed(2)}</p>
-
-                <div className="flex justify-end gap-4 mt-4">
+                <p className="text-lg font-semibold text-right mb-4">Total: ${total.toFixed(2)}</p>
+                <div className="flex justify-end gap-4">
                   <button
                     onClick={() => setOpen(false)}
-                    className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-white"
+                    className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-800 text-white"
                   >
                     Close
                   </button>
@@ -90,17 +93,6 @@ export default function CartButton() {
                   </Link>
                 </div>
               </>
-            ) : (
-              <div className="text-center text-gray-400 flex flex-col items-center gap-4">
-                <p className="text-lg">Your cart is empty</p>
-                <Link
-                  to="/"
-                  onClick={() => setOpen(false)}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white"
-                >
-                  ← Back to Home
-                </Link>
-              </div>
             )}
           </div>
         </div>
