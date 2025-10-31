@@ -4,6 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+dotenv.config();
+
+
 // ===== IMPORT MIDDLEWARE =====
 const { devLogger, prodLogger, requestLogger } = require('./middleware/logger');
 const { notFoundHandler, globalErrorHandler, AppError } = require('./middleware/errorHandler');
@@ -16,11 +19,21 @@ const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // ===== CORE MIDDLEWARE =====
+const allowedOrigins = [
+  "https://gamevault-frontend.vercel.app", // your Vercel app URL
+  "http://localhost:5173" // for local dev
+];
 
 // 1. Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors()); //hook up front end API
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+); //hook up front end API
 
 // 2. Logging middleware
 if (NODE_ENV === 'development') {
