@@ -91,12 +91,12 @@ export default function CartButton() {
                 </div>
               </>
             ) : (
-              <div className="text-center text-gray-400">
-                <p>Your cart is empty</p>
+              <div className="text-center text-gray-400 flex flex-col items-center gap-4">
+                <p className="text-lg">Your cart is empty</p>
                 <Link
                   to="/"
                   onClick={() => setOpen(false)}
-                  className="mt-4 inline-block px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white"
                 >
                   ← Back to Home
                 </Link>
