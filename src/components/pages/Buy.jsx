@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx";
 
 export default function Buy() {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const { cart, removeFromCart, removeAllFromCart, clearCart } = useCart();
   const [cardNumber, setCardNumber] = useState("");
   const [name, setName] = useState("");
   const [success, setSuccess] = useState(false);
 
   const total = cart.reduce((acc, g) => acc + g.price * g.quantity, 0);
 
-  // Luhn Algorithm to validate card
+  // Luhn Algorithm
   const isValidCard = (number) => {
     if (!number) return false;
     const digits = number.replace(/\D/g, "").split("").reverse().map(Number);
@@ -60,12 +60,30 @@ export default function Buy() {
                     <p className="text-indigo-400 font-bold">
                       ${item.price} × {item.quantity}
                     </p>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white"
-                    >
-                      Remove One
-                    </button>
+
+                    {item.quantity > 1 ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="flex-1 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white"
+                        >
+                          Remove One
+                        </button>
+                        <button
+                          onClick={() => removeAllFromCart(item.id)}
+                          className="flex-1 px-3 py-1.5 rounded-lg bg-red-800 hover:bg-red-900 text-white"
+                        >
+                          Remove All
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => removeAllFromCart(item.id)}
+                        className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white"
+                      >
+                        Remove
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
