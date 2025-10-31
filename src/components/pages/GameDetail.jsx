@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useCart } from "../../context/CartContext.jsx"; // cart context
 
 export default function ProductPage() {
   const { id } = useParams();
+  const { addToCart } = useCart(); // use existing cart system
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -23,15 +25,11 @@ export default function ProductPage() {
         if (ok) setLoading(false);
       }
     })();
-    return () => {
-      ok = false;
-    };
+    return () => { ok = false; };
   }, [id]);
 
-  const handleBuy = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push({ id: game.id, name: game.name, price: game.price });
-    localStorage.setItem("cart", JSON.stringify(cart));
+  const handleAddToCart = () => {
+    addToCart(game);
     alert(`${game.name} added to cart`);
   };
 
@@ -43,24 +41,30 @@ export default function ProductPage() {
       <Link to="/" className="text-indigo-400 hover:underline">
         &larr; Back
       </Link>
+
       <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
+        {/* No image size restriction */}
         <img
           src={game.img}
           alt={game.name}
           referrerPolicy="no-referrer"
-          className="w-full h-72 object-cover rounded-lg"
+          className="w-full object-contain rounded-lg"
         />
-        <div>
-          <h1 className="text-3xl font-bold">{game.name}</h1>
-          <p className="mt-2 text-gray-300">{game.description}</p>
-          <p className="mt-4 text-2xl font-semibold text-indigo-400">
-            ${Number(game.price).toFixed(2)}
-          </p>
+
+        <div className="flex flex-col justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">{game.name}</h1>
+            <p className="mt-2 text-gray-300">{game.description}</p>
+            <p className="mt-4 text-2xl font-semibold text-indigo-400">
+              ${Number(game.price).toFixed(2)}
+            </p>
+          </div>
+
           <button
-            onClick={handleBuy}
+            onClick={handleAddToCart}
             className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg font-medium"
           >
-            Buy
+            Add to Cart
           </button>
         </div>
       </div>
