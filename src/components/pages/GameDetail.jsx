@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useCart } from "../context/CartContext.jsx";
+import { useCart } from "../../context/CartContext.jsx";
 
 export default function ProductPage() {
   const { id } = useParams();
