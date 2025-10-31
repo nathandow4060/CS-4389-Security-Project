@@ -6,5 +6,5 @@ const Register = () => (
     <p className="text-gray-400 mt-2">Content coming soon...</p>
   </div>
 );
-Register
+
 export default Register;
