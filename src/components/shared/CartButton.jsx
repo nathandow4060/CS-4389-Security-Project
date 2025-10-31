@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext.jsx";
 
-export default function CartButton({ cart }) {
+export default function CartButton() {
+  const { cart, total } = useCart();
   const [open, setOpen] = useState(false);
-  const total = cart.reduce((acc, g) => acc + (Number(g.price) || 0), 0);
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    setOpen(false);    // Close the cart overlay
-    navigate("/Buy");  // Go to the buy page
+    setOpen(false);
+    navigate("/buy");
   };
 
   return (
