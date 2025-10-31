@@ -39,7 +39,6 @@ exports.getProductById = async (req, res, next) => {
 exports.createProduct = async (req, res, next) => {
   try {
     const {
-      digital_key,
       name_of_product,
       developer,
       price,
@@ -50,10 +49,10 @@ exports.createProduct = async (req, res, next) => {
 
     const insert = await db.query(
       `INSERT INTO product
-        (digital_key, name_of_product, developer, price, image_url, description, esrb_rating)
-       VALUES ($1,$2,$3,$4,$5,$6,$7)
-       RETURNING id, digital_key, name_of_product, developer, price, image_url, description, esrb_rating`,
-      [digital_key, name_of_product, developer, price, image_url, description, esrb_rating]
+        (name_of_product, developer, price, image_url, description, esrb_rating)
+       VALUES ($1,$2,$3,$4,$5,$6)
+       RETURNING id, name_of_product, developer, price, image_url, description, esrb_rating`,
+      [name_of_product, developer, price, image_url, description, esrb_rating]
     );
 
     res.status(201).json({ status: 'success', data: insert.rows[0] });

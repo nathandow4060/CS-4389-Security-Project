@@ -46,6 +46,18 @@ app.get('/', (req, res) => {
 const productRoutes = require('./routes/productRoutes');
 app.use('/products', productRoutes);
 
+//User Wishlist Routes
+//const userWishlistRoute = require('./routes/wishlistRoute');
+//app.use('/wishlist', userWishlistRoute);
+
+//Product_Key route
+const productKeysRoute = require('./routes/productKeysRoute');
+app.use('/products/:id/keys', productKeysRoute);
+
+//Purchase history routes
+const purchaseHistory = require('./routes/purchaseHistoryRoute');
+app.use('/user/:accountid/history', purchaseHistory);
+
 // Test routes for error handling
 app.get('/test-error', (req, res, next) => {
   next(new AppError('This is a test error - Bad Request', 400));
