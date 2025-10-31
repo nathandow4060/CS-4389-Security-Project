@@ -36,6 +36,13 @@ CREATE TABLE WEBPAGE_CONTENT(
 	name TEXT
 );
 
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(200) NOT NULL
+);
+
+
 --TABLE POPULATION
 INSERT INTO account (username,password,age,email)
 VALUES ('Ethan','Mypass',21,'elm210004@utdallas.edu');
