@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function UserButton() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -51,7 +53,15 @@ export default function UserButton() {
         <div className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
           {loggedIn ? (
             <>
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-700">Profile</button>
+              <button
+                className="w-full text-left px-4 py-2 hover:bg-gray-700"
+                onClick={() => {
+                  navigate("/profile"); // Navigate to profile
+                  setOpen(false);       // Close dropdown
+                }}
+              >
+                Profile
+              </button>
               <button className="w-full text-left px-4 py-2 hover:bg-gray-700">Orders</button>
               <button
                 onClick={handleLogout}
