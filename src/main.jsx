@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/*" element={<App />} /> {/* <-- use /* so App handles subroutes */}
         <Route path="/product/:id" element={<PDP />} />
       </Routes>
     </BrowserRouter>
