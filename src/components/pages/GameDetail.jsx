@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useCart } from "../../context/CartContext.jsx"; // cart context
+import { useCart } from "../context/CartContext.jsx";
 
 export default function ProductPage() {
   const { id } = useParams();
-  const { addToCart } = useCart(); // use existing cart system
+  const { addToCart } = useCart();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -30,7 +30,7 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     addToCart(game);
-    alert(`${game.name} added to cart`);
+    // Pop-up removed
   };
 
   if (loading) return <div className="p-8 text-gray-300">Loading…</div>;
@@ -43,7 +43,6 @@ export default function ProductPage() {
       </Link>
 
       <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
-        {/* No image size restriction */}
         <img
           src={game.img}
           alt={game.name}
