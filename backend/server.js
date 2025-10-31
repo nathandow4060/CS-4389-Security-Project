@@ -20,7 +20,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // ===== CORE MIDDLEWARE =====
 const allowedOrigins = [
-  "https://gamevault-frontend.vercel.app", // your Vercel app URL
+  "https://cs-4389-security-project-5itx3sd6g-nate-dows-projects.vercel.app/", // vercel app url in use
   "http://localhost:5173" // for local dev
 ];
 
