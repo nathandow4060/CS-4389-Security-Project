@@ -1,6 +1,6 @@
 CREATE ROLE admin LOGIN PASSWORD --PASSWORD_HERE; --insert password here from discord
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin;
-GRANT USAGE, SELECT ON SEQUENCE public.product_id_seq,user_wishlist_id_seq TO admin;
+GRANT USAGE, SELECT ON SEQUENCE public.product_id_seq, public.user_wishlist_id_seq, public.user_purchase_history_id_seq TO admin;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE ACCOUNT(
@@ -85,9 +85,6 @@ VALUES (1, pgp_sym_encrypt('E1234', 'b3fe0039a712cb658cc4477aa129d142c3352918de6
 		(1, pgp_sym_encrypt('M23R5', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
 		(2, pgp_sym_encrypt('K3467', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7'));
 
-DELETE FROM PRODUCT_KEY
-WHERE productid = 1 OR productid = 2
-
 --VIEW TABLE RECORDS
 SELECT * FROM account;
  --View product AND assciated KEYS
@@ -96,7 +93,9 @@ SELECT * FROM account;
 SELECT product.id, pgp_sym_decrypt(pk.key, 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7') as key, product.name_of_product FROM PRODUCT
 RIGHT JOIN PRODUCT_KEY as pk ON PRODUCT.id = pk.productid;
 
+SELECT * FROM ACCOUNT;
 SELECT * FROM product_key;
+SELECT * FROM PRODUCT;
 SELECT * FROM user_purchase_history;
 SELECT * FROM USER_WISHLIST;
 SELECT * FROM WEBPAGE_CONTENT;
