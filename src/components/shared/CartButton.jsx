@@ -1,8 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CartButton({ cart }) {
   const [open, setOpen] = useState(false);
   const total = cart.reduce((acc, g) => acc + (Number(g.price) || 0), 0);
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    setOpen(false);    // Close the cart overlay
+    navigate("/Buy");  // Go to the buy page
+  };
 
   return (
     <>
@@ -30,10 +37,16 @@ export default function CartButton({ cart }) {
             </ul>
             <p className="text-lg font-semibold mb-4">Total ${total.toFixed(2)}</p>
             <div className="flex justify-end gap-4">
-              <button onClick={() => setOpen(false)} className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700">
+              <button
+                onClick={() => setOpen(false)}
+                className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700"
+              >
                 Close
               </button>
-              <button className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white">
+              <button
+                onClick={handleCheckout}
+                className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white"
+              >
                 Checkout
               </button>
             </div>
