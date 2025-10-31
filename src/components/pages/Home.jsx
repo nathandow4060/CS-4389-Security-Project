@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext.jsx"; // adjust path if needed
 
-export default function Home({ games, addToCart }) {
+
+export default function Home({ games }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const topSellers = games.filter(g => g.topSeller);
   const filteredGames = games.filter(g => g.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const { addToCart } = useCart();
+
 
   useEffect(() => {
     if (!topSellers.length) return;
