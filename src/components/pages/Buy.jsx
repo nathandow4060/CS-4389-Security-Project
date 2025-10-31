@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useCart } from "../context/CartContext.jsx";
+import { useCart } from "../../context/CartContext.jsx";
 import { Link } from "react-router-dom";
 
 export default function Checkout() {
