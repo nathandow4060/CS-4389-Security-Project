@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 
 const NotFound = () => (
   <div className="p-8 text-center">
