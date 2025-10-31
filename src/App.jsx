@@ -31,5 +31,7 @@ export default function App() {
 
   const addToCart = (game) => setCart((prev) => [...prev, game]);
 
-  return null;
+  return (
+   
+  );
 }
