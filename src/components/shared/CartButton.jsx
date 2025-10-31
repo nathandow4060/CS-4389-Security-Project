@@ -27,13 +27,12 @@ export default function CartButton() {
             {cart.length === 0 ? (
               <div className="flex flex-col items-center gap-4 text-gray-200">
                 <p className="text-center">Your cart is empty</p>
-                <Link
-                  to="/"
-                  onClick={() => setOpen(false)}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white"
-                >
-                  ← Back to Home
-                </Link>
+                <button
+                    onClick={() => setOpen(false)}
+                    className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-800 text-white"
+                  >
+                    Close
+                  </button>
               </div>
             ) : (
               <>
