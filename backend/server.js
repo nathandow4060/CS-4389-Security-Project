@@ -35,9 +35,16 @@ app.get("/", (req, res) => {
   console.log("✅ Root route reached");
   res.send("Express server is running correctly!");
 });
+const gamesRoutes = require("./routes/gamesRoutes");
+app.use("/api/games", gamesRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
+//testdb.js at route folder
+const testDBRoute = require("./routes/testdb");
+app.use("/api", testDBRoute);
 
 // npm i ejs; This is a view engine that can be used to render html
 /*
