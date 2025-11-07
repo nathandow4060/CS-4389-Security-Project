@@ -86,7 +86,7 @@ exports.updateProduct = async (req, res, next) => {
     const values = []; //values the user provided for those fields
     //determine if passed fields are a subset of product table fields. If not throw error, if yes parse fields and values
     const incomingKeys = Object.keys(payload);
-    validKeys = new Set(fields)
+    const validKeys = new Set(fields);
     const invalidKeys = incomingKeys.filter((k) => !validKeys.has(k));
     console.log("Incoming keys " + incomingKeys)
     if (invalidKeys.length > 0) {
@@ -111,7 +111,7 @@ exports.updateProduct = async (req, res, next) => {
     const sql = `
       UPDATE product
       SET ${user_fields.join(', ')}
-      WHERE id = $${id}
+      WHERE id = $${values.length}
       RETURNING id, digital_key, name_of_product, developer, price, image_url, description, esrb_rating
     `;
 
@@ -122,6 +122,7 @@ exports.updateProduct = async (req, res, next) => {
     next(err);
   }
 };
+
 
 // DELETE /products/:id
 exports.deleteProduct = async (req, res, next) => {
@@ -134,4 +135,13 @@ exports.deleteProduct = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+// Ensure CommonJS export shape is explicit for route imports
+module.exports = {
+  getAllProducts: exports.getAllProducts,
+  getProductById: exports.getProductById,
+  createProduct: exports.createProduct,
+  updateProduct: exports.updateProduct,
+  deleteProduct: exports.deleteProduct,
 };
