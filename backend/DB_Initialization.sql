@@ -6,9 +6,9 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE ACCOUNT(
 	id BIGSERIAL PRIMARY KEY,
 	username TEXT UNIQUE NOT NULL,
-	password TEXT NOT NULL,
+	password BYTEA NOT NULL,
 	age INTEGER NOT NULL,
-	email TEXT UNIQUE NOT NULL 
+	email TEXT UNIQUE NOT NULL,
 );
 
 CREATE TABLE PRODUCT(
@@ -43,11 +43,15 @@ CREATE TABLE USER_PURCHASE_HISTORY(
 	id BIGSERIAL PRIMARY KEY,
 	productID BIGINT,
 	accountID BIGINT,
-	productKey TEXT,
+	productKey TEXT UNIQUE,
 	date_of_purchase TIMESTAMPTZ NOT NULL DEFAULT now(),
 	FOREIGN KEY (accountID) REFERENCES account(id),
-	FOREIGN KEY (productID) REFERENCES product(id)
+	FOREIGN KEY (productID) REFERENCES product(id),
+	UNIQUE(user_id, product_id),
+	UNIQUE(user_id, rank)
 );
+
+drop table USER_PURCHASE_HISTORY
 
 
 CREATE TABLE WEBPAGE_CONTENT(
@@ -61,7 +65,7 @@ CREATE TABLE WEBPAGE_CONTENT(
 
 --TABLE POPULATION
 INSERT INTO account (username,password,age,email)
-VALUES ('Ethan','Mypass',21,'elm210004@utdallas.edu');
+VALUES ('Ethan',pgp_sym_encrypt('mypass', 'c65ef18bd3a0183cedce4ff720f1f437d070194f916479d5874aef0964b62f29'),21,'elm210004@utdallas.edu');
 
 INSERT INTO product (name_of_product, developer, price, description, esrb_rating)
 VALUES
@@ -88,7 +92,7 @@ VALUES (1, pgp_sym_encrypt('E1234', 'b3fe0039a712cb658cc4477aa129d142c3352918de6
 		(2, pgp_sym_encrypt('K3467', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7'));
 
 --VIEW TABLE RECORDS
-SELECT * FROM account;
+SELECT id, username, pgp_sym_decrypt(password, 'c65ef18bd3a0183cedce4ff720f1f437d070194f916479d5874aef0964b62f29') as password, age, email FROM account;
  --View product AND assciated KEYS
  --decrepts key
  --Using exaple key, a randomly generated key will be stored on server as a var in .env

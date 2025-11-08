@@ -1,5 +1,6 @@
 const db = require('../db/db');
 const { AppError } = require('../middleware/errorHandler');
+const { createPurchaseHistoryEntry } = require('../services/purchaseHistoryService');
 
 // GET 
 //get all linked user history data by account id
@@ -40,7 +41,7 @@ exports.postUserPurchaseHistory = async (req, res, next) => {
         productkey //SEND THE DECRYPTED KEY
     } = req.body;
 
-    //VALIDATE JSON DATA
+    //VALIDATE  JSON DATA
     const productId_valid = parseInt(productid, 10);
     if (Number.isNaN(productId_valid) || productId_valid <= 0) {
       throw new AppError('Invalid productID', 400);
@@ -50,6 +51,13 @@ exports.postUserPurchaseHistory = async (req, res, next) => {
       throw new AppError('Invalid productKey', 400);
     }
 
+    const historyRecord = await createPurchaseHistoryEntry({
+      accountId: accountId,
+      productId: productId_valid,
+      productKey: productkey
+    });
+
+    /*
     const insert = await db.query(
       `INSERT INTO user_purchase_history
         (productid, accountid, productKey)
@@ -57,8 +65,9 @@ exports.postUserPurchaseHistory = async (req, res, next) => {
        RETURNING id, productid, accountid, productKey, date_of_purchase`,
       [productId_valid, accountId, productkey]
     );
+    */
 
-    res.status(201).json({ status: 'success', data: insert.rows[0] });
+    res.status(201).json({ status: 'success', data: {productId_valid, purchaseHistoryId: historyRecord.id}});
   } catch (err) {
     next(err);
   }
