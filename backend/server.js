@@ -6,15 +6,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const cors = require('cors');
-const dotenv = require('dotenv');
-
-dotenv.config();
-
-
 // ===== IMPORT MIDDLEWARE =====
-const { devLogger, prodLogger, requestLogger } = require('./middleware/logger');
-const { notFoundHandler, globalErrorHandler, AppError } = require('./middleware/errorHandler');
 const { devLogger, prodLogger, requestLogger } = require('./middleware/logger');
 const { notFoundHandler, globalErrorHandler, AppError } = require('./middleware/errorHandler');
 
@@ -26,10 +18,6 @@ const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // ===== CORE MIDDLEWARE =====
-const allowedOrigins = [
-  "https://cs-4389-security-project-5itx3sd6g-nate-dows-projects.vercel.app/", // vercel app url in use
-  "http://localhost:5173" // for local dev
-];
 const allowedOrigins = [
   "https://cs-4389-security-project-5itx3sd6g-nate-dows-projects.vercel.app/", // vercel app url in use
   "http://localhost:5173" // for local dev
@@ -77,15 +65,12 @@ app.get('/', (req, res) => {
 const productRoutes = require('./routes/productRoutes');
 app.use('/products', productRoutes);
 //Product Routes
-const productRoutes = require('./routes/productRoutes');
-app.use('/products', productRoutes);
 
 // Purchase Route: POST /api/purchase
 // Handles key allocation and purchase recording
 const purchaseRoutes = require('./routes/purchaseRoutes');
 app.use('/api/purchase', purchaseRoutes);
 
-// Test routes for error handling
 // Test routes for error handling
 app.get('/test-error', (req, res, next) => {
   next(new AppError('This is a test error - Bad Request', 400));
