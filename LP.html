@@ -135,7 +135,7 @@
   </footer>
 
   <!-- CART MODAL -->
-  <div id="cartModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+  <div id="cartModal" class="hidden fixed inset-0 bg-black bg-opacity-60 justify-center items-center z-50">
     <div class="bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-md">
       <h2 class="text-2xl font-bold mb-4 text-indigo-400">Your Cart</h2>
       <ul id="cartItems" class="space-y-2 mb-4 max-h-60 overflow-y-auto"></ul>
@@ -211,8 +211,18 @@
       cartCount.textContent = cart.length;
     };
 
-    cartButton.addEventListener('click', () => cartModal.classList.remove('hidden'));
-    closeCartBtn.addEventListener('click', () => cartModal.classList.add('hidden'));
+    const openCart = () => {
+      cartModal.classList.remove('hidden');
+      cartModal.classList.add('flex');
+    };
+
+    const closeCart = () => {
+      cartModal.classList.add('hidden');
+      cartModal.classList.remove('flex');
+    };
+
+    cartButton.addEventListener('click', openCart);
+    closeCartBtn.addEventListener('click', closeCart);
 
     // ===== SEARCH =====
     const searchBar = document.getElementById('searchBar');

@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+dotenv.config();
+
 // ===== IMPORT MIDDLEWARE =====
 const { devLogger, prodLogger, requestLogger } = require('./middleware/logger');
 const { notFoundHandler, globalErrorHandler, AppError } = require('./middleware/errorHandler');
@@ -16,11 +18,28 @@ const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // ===== CORE MIDDLEWARE =====
+const allowedOrigins = [
+  "https://cs-4389-security-project-5itx3sd6g-nate-dows-projects.vercel.app/", // vercel app url in use
+  "http://localhost:5173" // for local dev
+];
 
 // 1. Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors()); //hook up front end API
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+); //hook up front end API
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+); //hook up front end API
 
 // 2. Logging middleware
 if (NODE_ENV === 'development') {
@@ -45,6 +64,12 @@ app.get('/', (req, res) => {
 //Product Routes
 const productRoutes = require('./routes/productRoutes');
 app.use('/products', productRoutes);
+//Product Routes
+
+// Purchase Route: POST /api/purchase
+// Handles key allocation and purchase recording
+const purchaseRoutes = require('./routes/purchaseRoutes');
+app.use('/api/purchase', purchaseRoutes);
 
 //User Wishlist Routes
 //const userWishlistRoute = require('./routes/wishlistRoute');
@@ -78,10 +103,10 @@ app.use(globalErrorHandler);
 
 // ===== START SERVER =====
 app.listen(PORT, () => {
-  console.log(`🚀 GameVault Server running on port ${PORT}`);
-  console.log(`📝 Environment: ${NODE_ENV}`);
-  console.log(`📊 Logging Mode: ${NODE_ENV === 'development' ? 'Console + File' : 'File Only'}`);
-  console.log(`⏰ Started at: ${new Date().toISOString()}`);
+  console.log(` GameVault Server running on port ${PORT}`);
+  console.log(` Environment: ${NODE_ENV}`);
+  console.log(` Logging Mode: ${NODE_ENV === 'development' ? 'Console + File' : 'File Only'}`);
+  console.log(` Started at: ${new Date().toISOString()}`);
 });
 
 module.exports = app;

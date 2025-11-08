@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Elden Ring",
+    "price": 59.99,
+    "topSeller": true,
+    "img": "/images/eldenring.avif",
+    "description": "Open-world action RPG across the Lands Between."
+  },
+  {
+    "id": 2,
+    "name": "Starfield",
+    "price": 69.99,
+    "topSeller": true,
+    "img": "/images/starfield.jpg",
+    "description": "Bethesda’s space RPG focused on exploration and factions."
+  },
+  {
+    "id": 3,
+    "name": "Spider-Man 2",
+    "price": 59.99,
+    "topSeller": true,
+    "img": "/images/spiderman2.webp",
+    "description": "Swing through NYC as Peter and Miles with symbiote powers."
+  },
+  {
+    "id": 4,
+    "name": "Zelda Tears of the Kingdom",
+    "price": 69.99,
+    "topSeller": false,
+    "img": "/images/zelda.jpg",
+    "description": "Inventive sandbox adventure across Hyrule, skies, and depths."
+  },
+  {
+    "id": 5,
+    "name": "God of War Ragnarok",
+    "price": 59.99,
+    "topSeller": false,
+    "img": "/images/godofwar.avif",
+    "description": "Norse saga finale with weighty combat and emotional story."
+  },
+  {
+    "id": 6,
+    "name": "Cyberpunk 2077",
+    "price": 49.99,
+    "topSeller": false,
+    "img": "/images/cyberpunk.jpg",
+    "description": "First-person RPG set in neon-drenched Night City."
+  }
+]
