@@ -1,25 +1,24 @@
 const API_BASE_URL =
-import.meta.env.VITE_API_URL || "http://localhost:3000"; //use the backend server or do local
+import.meta.env.VITE_API_URL || "https://gamevault-backend-a1ce.onrender.com"; //use the backend server or do local
 
 
 
-//to use this API in a file use: import { *insertCommand* } from "../../api; 
 export async function getProducts() {
- //THIS IS EXAMPLE CODE AND HASN"T BEEN TESTETD
-  const res = await fetch(`${API_BASE_URL}/products`, {
-    credentials: "include",
-  });
+  const res = await fetch(`${API_BASE_URL}/products`);
   if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
-}
-/* Add more commands for the frontend to backendas needed
-// Get one product by ID
-export async function getProductById(id) {
-  const res = await fetch(`${API_BASE_URL}/products/${id}`, { credentials: "include" });
-  if (!res.ok) throw new Error(`Failed to fetch product ${id}`);
-  return res.json();
+  const data = await res.json();
+  return data.data; // because your backend wraps results in { status, data }
 }
 
+export async function getProductById(id) {
+  const res = await fetch(`${API_BASE_URL}/products/${id}`);
+  if (!res.ok) throw new Error(`Failed to fetch product ${id}`);
+  const data = await res.json();
+  return data.data;
+}
+
+
+/*
 // -------------------- AUTH --------------------
 export async function loginUser(email, password) {
   const res = await fetch(`${API_BASE_URL}/auth/login`, {
