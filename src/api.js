@@ -1,4 +1,4 @@
-const API_BASE_URL = "/api-vercel-helper"; // Vercel proxy path
+const API_BASE_URL = "/api"; // Vercel proxy path
 
 
 
