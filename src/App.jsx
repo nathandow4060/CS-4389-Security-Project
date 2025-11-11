@@ -284,7 +284,7 @@ export default function App() {
 
   const topSellers = games.filter((g) => g.topSeller);
   const filteredGames = games.filter((g) =>
-    g.name.toLowerCase().includes(searchTerm.toLowerCase())
+    g.name_of_product.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
