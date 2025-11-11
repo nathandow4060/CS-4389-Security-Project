@@ -6,7 +6,7 @@ const API_BASE = "/api"; // base path to your Vercel serverless functions
  * Fetch all products
  * @returns {Promise<Array>} array of products
  */
-export async function fetchProducts() {
+export async function getProducts() {
   try {
     const response = await fetch(`${API_BASE}/products`);
     if (!response.ok) throw new Error("Failed to fetch products");
@@ -22,7 +22,7 @@ export async function fetchProducts() {
  * @param {number|string} id - product ID
  * @returns {Promise<Object|null>} product object or null if not found
  */
-export async function fetchProductById(id) {
+export async function getProductById(id) {
   try {
     const response = await fetch(`${API_BASE}/products?id=${id}`);
     if (!response.ok) throw new Error(`Failed to fetch product with id ${id}`);
