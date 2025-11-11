@@ -1,3 +1,4 @@
+import { getProducts } from "./api.js";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -8,25 +9,23 @@ export default function ProductPage() {
   const [err, setErr] = useState("");
 
   useEffect(() => {
-    let ok = true;
-    (async () => {
-      try {
-        const res = await fetch("/api/games.json");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const list = await res.json();
-        const found = list.find((g) => g.id === Number(id));
-        if (!found) throw new Error("Not found");
-        if (ok) setGame(found);
-      } catch (e) {
-        if (ok) setErr(e.message || "Failed to load");
-      } finally {
-        if (ok) setLoading(false);
-      }
-    })();
-    return () => {
-      ok = false;
-    };
-  }, [id]);
+  let ok = true;
+
+  (async () => {
+    try {
+      const product = await getProductById(id);
+      if (ok) setGame(product);
+    } catch (e) {
+      if (ok) setErr(e.message || "Failed to load product");
+    } finally {
+      if (ok) setLoading(false);
+    }
+  })();
+
+  return () => {
+    ok = false;
+  };
+}, [id]);
 
   const handleBuy = () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
