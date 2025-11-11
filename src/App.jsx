@@ -1,4 +1,4 @@
-import { getProducts } from "src/api.js";
+import { getProducts } from "./api.js";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
