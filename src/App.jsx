@@ -272,6 +272,7 @@ export default function App() {
     (async () => {
       try {
         const products = await getProducts();
+        console.log(products); // inspect in the console
         setGames(products);
       } catch (err) {
         console.error("Failed to fetch products from backend:", err);
