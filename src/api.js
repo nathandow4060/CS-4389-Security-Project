@@ -1,19 +1,43 @@
-const API_BASE_URL = "/api"; // Vercel proxy path
+// src/api.js
 
+const API_BASE = "/api"; // base path to your Vercel serverless functions
 
-
-export async function getProducts() {
-  const res = await fetch(`${API_BASE_URL}/products`);
-  if (!res.ok) throw new Error("Failed to fetch products");
-  const data = await res.json();
-  return data.data; // because your backend wraps results in { status, data }
+/**
+ * Fetch all products
+ * @returns {Promise<Array>} array of products
+ */
+export async function fetchProducts() {
+  try {
+    const response = await fetch(`${API_BASE}/products`);
+    if (!response.ok) throw new Error("Failed to fetch products");
+    return await response.json();
+  } catch (err) {
+    console.error("Failed to fetch products from backend:", err);
+    return [];
+  }
 }
 
-export async function getProductById(id) {
-  const res = await fetch(`${API_BASE_URL}/products/${id}`);
-  if (!res.ok) throw new Error(`Failed to fetch product ${id}`);
-  const data = await res.json();
-  return data.data;
+/**
+ * Fetch a single product by ID
+ * @param {number|string} id - product ID
+ * @returns {Promise<Object|null>} product object or null if not found
+ */
+export async function fetchProductById(id) {
+  try {
+    const response = await fetch(`${API_BASE}/products?id=${id}`);
+    if (!response.ok) throw new Error(`Failed to fetch product with id ${id}`);
+    const data = await response.json();
+
+    // If backend returns array for lookup, find the product
+    if (Array.isArray(data)) {
+      return data.find((p) => String(p.id) === String(id)) || null;
+    }
+
+    return data || null;
+  } catch (err) {
+    console.error(`Failed to fetch product by ID: ${id}`, err);
+    return null;
+  }
 }
 
 
