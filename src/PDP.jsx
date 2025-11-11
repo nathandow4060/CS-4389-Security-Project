@@ -29,7 +29,7 @@ export default function ProductPage() {
 
   const handleBuy = () => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push({ id: game.id, name: game.name, price: game.price });
+    cart.push({ id: game.id, name: game.name_of_product, price: game.price });
     localStorage.setItem("cart", JSON.stringify(cart));
     alert(`${game.name} added to cart`);
   };
