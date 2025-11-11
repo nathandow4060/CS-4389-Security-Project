@@ -1,5 +1,5 @@
 const API_BASE_URL =
-import.meta.env.VITE_API_URL || "https://gamevault-backend-a1ce.onrender.com"; //use the backend server or do local
+import.meta.env.VITE_API_URL || "/api-vercel-helper"; // local serverless proxy path
 
 
 
