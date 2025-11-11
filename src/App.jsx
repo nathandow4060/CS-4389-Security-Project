@@ -266,7 +266,7 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [games, setGames] = useState(LOCAL_GAMES);
+  const [games, setGames] = useState([]);
 
   useEffect(() => {
     (async () => {
