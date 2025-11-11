@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "/api/products";
+const API_BASE_URL = "/api-vercel-helper/products"; // Vercel proxy path
 
 
 
