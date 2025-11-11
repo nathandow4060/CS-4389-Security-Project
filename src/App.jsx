@@ -2,7 +2,7 @@ import { getProducts } from "./api.js";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// fallback local data (same as /public/api/games.json)
+/* fallback local data (same as /public/api/games.json)
 const LOCAL_GAMES = [
   { id: 1, name: "Elden Ring", price: 59.99, topSeller: true,  img: "/images/eldenring.jpg",  description: "Open-world action RPG across the Lands Between." },
   { id: 2, name: "Starfield",  price: 69.99, topSeller: true,  img: "/images/starfield.jpg",   description: "Bethesda’s space RPG focused on exploration and factions." },
@@ -11,7 +11,7 @@ const LOCAL_GAMES = [
   { id: 5, name: "God of War Ragnarok", price: 59.99, topSeller: false, img: "/images/godofwar.avif", description: "Norse saga finale with weighty combat and emotional story." },
   { id: 6, name: "Cyberpunk 2077", price: 49.99, topSeller: false, img: "/images/cyberpunk.jpg", description: "First-person RPG set in neon-drenched Night City." }
 ];
-
+*/
 
 function CartButton({ cart }) {
   const [open, setOpen] = useState(false);
@@ -275,7 +275,8 @@ export default function App() {
         setGames(products);
       } catch (err) {
         console.error("Failed to fetch products from backend:", err);
-        setGames(LOCAL_GAMES);
+        setGames([]); // fallback: empty array instead of LOCAL_GAMES
+        //setGames(LOCAL_GAMES);
       }
     })();
   }, []);
