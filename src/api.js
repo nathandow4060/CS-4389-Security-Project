@@ -1,5 +1,4 @@
-const API_BASE_URL =
-import.meta.env.VITE_API_URL || "/api-vercel-helper"; // local serverless proxy path
+const API_BASE_URL = import.meta.env.VITE_API_URL || "/api/products";
 
 
 
