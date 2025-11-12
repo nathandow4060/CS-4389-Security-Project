@@ -1,9 +1,8 @@
 export default async function handler(req, res) {
-  const backendUrl = "https://gamevault-backend-a1ce.onrender.com/products";
+  const backendUrl = `${process.env.VITE_API_URL}/products`;
 
-  const username = "admin"; // your backend username
-  const password = "S3BAuALH3bk3hsokEtXugVy86cSDHEkk"; // your backend password
-
+  const username = process.env.BACKEND_ADMIN_USER;
+  const password = process.env.BACKEND_ADMIN_PASS;
   // Basic Auth header
   const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
 

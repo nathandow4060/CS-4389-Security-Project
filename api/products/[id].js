@@ -1,11 +1,14 @@
 // api/products/[id].js
 export default async function handler(req, res) {
-    console.log("Fetching product with ID:", req.query.id);
     const { id } = req.query;
-    const backendUrl = `https://gamevault-backend-a1ce.onrender.com/products/${id}`;
 
-    const username = "admin";
-    const password = "S3BAuALH3bk3hsokEtXugVy86cSDHEkk";
+    // Log the ID being fetched
+    console.log("Fetching product with ID:", id);
+
+    // Use environment variables
+    const backendUrl = `${process.env.VITE_API_URL}/products/${id}`;
+    const username = process.env.BACKEND_ADMIN_USER;
+    const password = process.env.BACKEND_ADMIN_PASS;
     const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
 
     try {
@@ -14,7 +17,7 @@ export default async function handler(req, res) {
         });
 
         if (!response.ok) {
-        return res.status(response.status).send(`Backend returned status ${response.status}`);
+            return res.status(response.status).send(`Backend returned status ${response.status}`);
         }
 
         const data = await response.json();
@@ -24,3 +27,4 @@ export default async function handler(req, res) {
         res.status(500).send("Failed to fetch product");
     }
 }
+
