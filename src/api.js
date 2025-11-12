@@ -1,4 +1,4 @@
-const API_BASE = "api"; // base path
+const API_BASE = import.meta.env.VITE_API_URL
 
 export async function getProducts() {
   try {
