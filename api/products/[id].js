@@ -13,11 +13,11 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      throw new Error(`Backend returned status ${response.status}`);
+      return res.status(response.status).send(`Backend returned status ${response.status}`);
     }
 
     const data = await response.json();
-    res.status(200).json({ data }); // wrap in `data` to match api.js expectation
+    res.status(200).json({ data }); // wrap in `data` to match api.js
   } catch (err) {
     console.error("Error fetching product by ID:", err);
     res.status(500).send("Failed to fetch product");
