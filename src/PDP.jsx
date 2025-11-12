@@ -15,6 +15,7 @@ export default function ProductPage() {
   (async () => {
     try {
       const product = await getProductById(id);
+      console.log("Product from API (PDP):", product);
       if (ok) setGame(product);
     } catch (e) {
       if (ok) setErr(e.message || "Failed to load product");
