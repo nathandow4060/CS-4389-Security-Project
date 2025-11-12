@@ -297,12 +297,8 @@ export default function App() {
 
   return (
     <div className="bg-gray-900 text-gray-100 min-h-screen">
-      <header className="flex flex-wrap items-center justify-between px-8 py-4 bg-gray-800 shadow-md">
-        <h1 className="text-3xl font-bold text-indigo-400">
-          <Link to="/">GameHub</Link>
-        </h1>
-
-        {/* ✅ Cart and User buttons side-by-side */}
+      <header className="flex justify-between items-center px-8 py-4 bg-gray-800">
+        <Link to="/" className="text-3xl font-bold text-indigo-400">GameHub</Link>
         <div className="flex items-center gap-4">
           <CartButton cart={cart} />
           <UserButton />
@@ -378,3 +374,4 @@ export default function App() {
     </div>
   );
 }
+
