@@ -1,6 +1,7 @@
 import { getProducts } from "./api.js";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { getProductById } from "./api.js";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -44,13 +45,13 @@ export default function ProductPage() {
       </Link>
       <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
         <img
-          src={game.img}
-          alt={game.name}
+          src={game.img_url}
+          alt={game.name_of_product}
           referrerPolicy="no-referrer"
           className="w-full h-72 object-cover rounded-lg"
         />
         <div>
-          <h1 className="text-3xl font-bold">{game.name}</h1>
+          <h1 className="text-3xl font-bold">{game.name_of_product}</h1>
           <p className="mt-2 text-gray-300">{game.description}</p>
           <p className="mt-4 text-2xl font-semibold text-indigo-400">
             ${Number(game.price).toFixed(2)}
