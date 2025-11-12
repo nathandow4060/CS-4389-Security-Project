@@ -1,15 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx"; // adjust path if needed
+import { getProducts } from "./api.js";
 
 
-export default function Home({ games }) {
+export default function Home() {
+  const [games, setGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
+  const { addToCart } = useCart();
+
+
+   useEffect(() => {
+    let ok = true;
+    (async () => {
+      try {
+        const data = await getProducts();
+        if (ok) setGames(data);
+      } catch (e) {
+        if (ok) setErr(e.message || "Failed to load products");
+      } finally {
+        if (ok) setLoading(false);
+      }
+    })();
+    return () => { ok = false; };
+  }, []);
 
   const topSellers = games.filter(g => g.topSeller);
   const filteredGames = games.filter(g => g.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  const { addToCart } = useCart();
+ 
 
 
   useEffect(() => {
@@ -17,6 +38,10 @@ export default function Home({ games }) {
     const id = setInterval(() => setCarouselIndex(i => (i + 1) % topSellers.length), 4000);
     return () => clearInterval(id);
   }, [topSellers.length]);
+
+  //Added this to be consitant with GameDetails
+  if (loading) return <div className="p-8 text-gray-300">Loading…</div>;
+  if (err) return <div className="p-8 text-red-400">Error: {err}</div>;
 
   return (
     <main className="p-8">
@@ -32,7 +57,7 @@ export default function Home({ games }) {
               {topSellers.map(game => (
                 <div key={game.id} className="min-w-full flex-shrink-0 relative">
                   <Link to={`/game/${game.id}`}>
-                    <img src={game.img} alt={game.name} className="w-full h-64 object-cover" />
+                    <img src={game.img_url} alt={game.name_of_product} className="w-full h-64 object-cover" />
                   </Link>
                 </div>
               ))}
@@ -58,10 +83,10 @@ export default function Home({ games }) {
           {filteredGames.map((game) => (
             <div key={game.id} className="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
               <Link to={`/game/${game.id}`}>
-                <img src={game.img} alt={game.name} className="w-full h-48 object-cover" />
+                <img src={game.img_url} alt={game.name_of_product} className="w-full h-48 object-cover" />
               </Link>
               <div className="p-4">
-                <h3 className="text-lg font-semibold">{game.name}</h3>
+                <h3 className="text-lg font-semibold">{game.name_of_product}</h3>
                 <p className="text-indigo-400 font-bold mt-2">${game.price}</p>
                 <button
                   onClick={() => addToCart(game)}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx";
+import { getProducts } from "./api.js";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -10,23 +11,19 @@ export default function ProductPage() {
   const [err, setErr] = useState("");
 
   useEffect(() => {
-    let ok = true;
-    (async () => {
-      try {
-        const res = await fetch("/api/games.json");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const list = await res.json();
-        const found = list.find((g) => g.id === Number(id));
-        if (!found) throw new Error("Not found");
-        if (ok) setGame(found);
-      } catch (e) {
-        if (ok) setErr(e.message || "Failed to load");
-      } finally {
-        if (ok) setLoading(false);
-      }
-    })();
-    return () => { ok = false; };
-  }, [id]);
+  const fetchProduct = async () => {
+    try {
+      const data = await getProductById(id); // already JSON and handeled in api.js
+      setProduct(data);
+    } catch (err) {
+      console.error("Error fetching product:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchProduct();
+}, [id]);
+
 
   const handleAddToCart = () => {
     addToCart(game);
@@ -44,15 +41,15 @@ export default function ProductPage() {
 
       <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
         <img
-          src={game.img}
-          alt={game.name}
+          src={game.img_url}
+          alt={game.name_of_product}
           referrerPolicy="no-referrer"
           className="w-full object-contain rounded-lg"
         />
 
         <div className="flex flex-col justify-between">
           <div>
-            <h1 className="text-3xl font-bold">{game.name}</h1>
+            <h1 className="text-3xl font-bold">{game.name_of_product}</h1>
             <p className="mt-2 text-gray-300">{game.description}</p>
             <p className="mt-4 text-2xl font-semibold text-indigo-400">
               ${Number(game.price).toFixed(2)}

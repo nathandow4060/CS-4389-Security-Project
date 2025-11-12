@@ -1,4 +1,4 @@
-const API_BASE = "api"; // your base path
+const API_BASE = "api"; // base path
 
 export async function getProducts() {
   try {
