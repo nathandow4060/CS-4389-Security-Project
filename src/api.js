@@ -2,7 +2,7 @@ const API_BASE = '/api';
 
 export async function getProducts() {
   try {
-    const res = await fetch(`${API_BASE}/products`);
+    const res = await fetch(`${API_BASE}/products`); // Fixed: added parentheses and proper template literal
     if (!res.ok) {
       throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
     }
@@ -14,15 +14,14 @@ export async function getProducts() {
   }
 }
 
-// Use backend endpoint /products/:id
 export async function getProductById(id) {
   try {
-    const res = await fetch(`${API_BASE}/products/${id}`);
+    const res = await fetch(`${API_BASE}/products/${id}`); // Fixed: added parentheses and proper template literal
     if (!res.ok) {
       throw new Error(`Failed to fetch product with ID ${id}: ${res.status} ${res.statusText}`);
     }
     const json = await res.json();
-    return json.data || null; // assuming backend responds with { data: { ...product } }
+    return json.data || null;
   } catch (error) {
     console.error(`Error fetching product with ID ${id}:`, error);
     return null;

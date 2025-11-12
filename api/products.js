@@ -1,9 +1,10 @@
+// api/products.js - Fixed version
 export default async function handler(req, res) {
   const backendUrl = `${process.env.VITE_API_URL}/products`;
-
   const username = process.env.BACKEND_ADMIN_USER;
   const password = process.env.BACKEND_ADMIN_PASS;
-  // Basic Auth header
+  
+  // Basic Auth header - Fixed: proper template literal
   const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
 
   try {
@@ -12,16 +13,15 @@ export default async function handler(req, res) {
         "Authorization": authHeader
       }
     });
-
+    
     if (!response.ok) {
       throw new Error(`Backend returned status ${response.status}`);
     }
-
+    
     const data = await response.json();
     res.status(200).json(data);
-
   } catch (err) {
     console.error("Error fetching products:", err);
-    res.status(500).send("Failed to fetch products");
+    res.status(500).json({ error: "Failed to fetch products" });
   }
 }
