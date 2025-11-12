@@ -56,7 +56,7 @@ export default function Home() {
             >
               {topSellers.map(game => (
                 <div key={game.id} className="min-w-full flex-shrink-0 relative">
-                  <Link to={`/game/${game.id}`}>
+                  <Link to={`/product/${game.id}`}>
                     <img src={game.img_url} alt={game.name_of_product} className="w-full h-64 object-cover" />
                   </Link>
                 </div>

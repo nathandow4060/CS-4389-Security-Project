@@ -17,16 +17,17 @@ export async function getProducts() {
 // Use backend endpoint /products/:id
 export async function getProductById(id) {
   try {
-    const res = await fetch(`/api/products/${id}`); // proxy to backend
-    if (!res.ok) throw new Error(`Failed to fetch product: ${res.status}`);
+    const res = await fetch(`${API_BASE}/products/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch product with ID ${id}: ${res.status} ${res.statusText}`);
+    }
     const json = await res.json();
-    return json.data || null;
-  } catch (err) {
-    console.error(err);
+    return json.data || null; // assuming backend responds with { data: { ...product } }
+  } catch (error) {
+    console.error(`Error fetching product with ID ${id}:`, error);
     return null;
   }
 }
-
 
 
 
