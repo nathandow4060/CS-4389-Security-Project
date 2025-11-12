@@ -316,12 +316,12 @@ export default function App() {
               >
                 {topSellers.map((game) => (
                   <div key={game.id} className="min-w-full flex-shrink-0 relative">
-                    <Link to={`/product/${game.id}`}>
+                    <Link to={`/products/${game.id}`}>
                       <img src={game.img_url} alt={game.name_of_product} className="w-full h-64 object-cover" />
                     </Link>
                     <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
                       <h3 className="text-xl font-semibold">
-                        <Link to={`/product/${game.id}`}>{game.name_of_product}</Link>
+                        <Link to={`/products/${game.id}`}>{game.name_of_product}</Link>
                       </h3>
                       <p className="text-indigo-400 font-bold">${Number(game.price).toFixed(2)}</p>
                     </div>
@@ -350,12 +350,12 @@ export default function App() {
                 key={game.id}
                 className="bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105"
               >
-                <Link to={`/product/${game.id}`}>
+                <Link to={`/products/${game.id}`}>
                   <img src={game.img_url} alt={game.name_of_product} className="w-full h-48 object-cover" />
                 </Link>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold">
-                    <Link to={`/product/${game.id}`}>{game.name_of_product}</Link>
+                    <Link to={`/products/${game.id}`}>{game.name_of_product}</Link>
                   </h3>
                   <p className="text-sm text-gray-400">Product ID {game.id}</p>
                   <p className="text-indigo-400 font-bold mt-2">${Number(game.price).toFixed(2)}</p>
