@@ -16,7 +16,7 @@ export default function ProductPage() {
   const fetchProduct = async () => {
     try {
       const data = await getProductById(id); // already JSON and handeled in api.js
-      setProduct(data);
+      setGame(data);
     } catch (err) {
       console.error("Error fetching product:", err);
     } finally {
