@@ -14,7 +14,7 @@ export default function ProductPage() {
 
   (async () => {
     try {
-      const product = await getProductById(id);
+      const product = await getProductById(id); // already JSON and handeled in api.js
       console.log("Product from API (PDP):", product);
       if (ok) setGame(product);
     } catch (e) {
