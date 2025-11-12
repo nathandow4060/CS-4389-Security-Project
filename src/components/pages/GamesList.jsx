@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getProducts } from "./api.js";
+import { getProducts } from "../../api.js";
 
 /* fallback local data (same as /public/api/games.json)
 const LOCAL_GAMES = [

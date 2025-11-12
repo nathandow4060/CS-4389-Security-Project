@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx"; // adjust path if needed
-import { getProducts } from "./api.js";
+import { getProducts } from "../../api.js";
 
 
 export default function Home() {
