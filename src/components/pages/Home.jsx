@@ -82,7 +82,7 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredGames.map((game) => (
             <div key={game.id} className="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
-              <Link to={`/game/${game.id}`}>
+              <Link to={`/product/${game.id}`}>
                 <img src={game.img_url} alt={game.name_of_product} className="w-full h-48 object-cover" />
               </Link>
               <div className="p-4">
