@@ -29,7 +29,7 @@ export default function Home() {
   }, []);
 
   const topSellers = games.filter(g => g.topSeller);
-  const filteredGames = games.filter(g => g.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredGames = games.filter(g => g.name_of_product.toLowerCase().includes(searchTerm.toLowerCase()));
  
 
 
