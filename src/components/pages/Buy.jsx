@@ -69,9 +69,10 @@ export default function Buy() {
     clearCart();
 
   } catch (err) {
-    console.error(err);
-    alert("An error occurred during purchase.");
-  }
+  console.error("PURCHASE ERROR:", err);
+  alert("An error occurred during purchase.");
+}
+
 };
 
   return (
