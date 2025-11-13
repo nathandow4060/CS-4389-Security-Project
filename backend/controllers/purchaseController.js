@@ -39,9 +39,16 @@ exports.createPurchase = async (req, res, next) => {
     const { accountId, productId } = req.body || {};
     const parsedAccountId = Number(accountId);
     const parsedProductId = Number(productId);
-    if (Number.isNaN(parsedAccountId) && parsedAccountId <= 0 || Number.isNaN(parsedProductId) && parsedProductId <= 0) {
-      throw new AppError('Invalid accountId or productId', 400);
-    }
+    if (
+  !parsedAccountId ||
+  Number.isNaN(parsedAccountId) ||
+  parsedAccountId <= 0 ||
+  !parsedProductId ||
+  Number.isNaN(parsedProductId) ||
+  parsedProductId <= 0
+) {
+  throw new AppError('Invalid accountId or productId', 400);
+}
 
     // Start transaction to ensure atomic allocation and recording
     await client.query('BEGIN');
