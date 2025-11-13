@@ -4,8 +4,7 @@ import { useCart } from "../../context/CartContext.jsx"; // adjust path if neede
 import { getProducts } from "../../api.js";
 
 
-export default function Home() {
-  const [games, setGames] = useState([]);
+export default function Home( { games, addToCart }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -15,7 +14,6 @@ export default function Home() {
   const topSellers = games.filter(g => g.topSeller);
   const filteredGames = games.filter(g => g.name_of_product.toLowerCase().includes(searchTerm.toLowerCase()));
  
-
 
   useEffect(() => {
     if (!topSellers.length) return;
