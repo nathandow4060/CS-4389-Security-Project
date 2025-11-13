@@ -12,22 +12,6 @@ export default function Home() {
   const [err, setErr] = useState("");
   const { addToCart } = useCart();
 
-
-   useEffect(() => {
-    let ok = true;
-    (async () => {
-      try {
-        const data = await getProducts();
-        if (ok) setGames(data);
-      } catch (e) {
-        if (ok) setErr(e.message || "Failed to load products");
-      } finally {
-        if (ok) setLoading(false);
-      }
-    })();
-    return () => { ok = false; };
-  }, []);
-
   const topSellers = games.filter(g => g.topSeller);
   const filteredGames = games.filter(g => g.name_of_product.toLowerCase().includes(searchTerm.toLowerCase()));
  
