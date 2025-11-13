@@ -37,7 +37,7 @@ export default function Buy() {
     }
 
     // Hardcoded until login is implemented
-    const accountId = 1;
+    const accountId = 2;
 
     try {
       const confirmations = [];
