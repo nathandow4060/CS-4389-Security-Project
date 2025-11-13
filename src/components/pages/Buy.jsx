@@ -24,13 +24,55 @@ export default function Buy() {
     return sum % 10 === 0;
   };
 
-  const handlePurchase = (e) => {
-    e.preventDefault();
-    if (!name || !cardNumber) return alert("Please enter your name and card number");
-    if (!isValidCard(cardNumber)) return alert("Invalid card number");
+ const handlePurchase = async (e) => {
+  e.preventDefault();
+
+  if (!name || !cardNumber) {
+    return alert("Please enter your name and card number");
+  }
+
+  if (!isValidCard(cardNumber)) {
+    return alert("Invalid card number");
+  }
+
+  // You should get this from user auth later, but hardcode for now:
+  const accountId = 1;
+
+  try {
+    const backendUrl = import.meta.env.VITE_API_URL;
+    const confirmations = [];
+
+    for (const item of cart) {
+      // Make 1 request per quantity
+      for (let i = 0; i < item.quantity; i++) {
+        const res = await fetch(`${backendUrl}/api/purchase`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            accountId,
+            productId: item.id
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || data.status === "Purchase Failed") {
+          return alert(`Purchase failed for ${item.name_of_product}: ${data.message}`);
+        }
+
+        confirmations.push(data.data);
+      }
+    }
+
+    console.log("Purchase confirmations:", confirmations);
     setSuccess(true);
     clearCart();
-  };
+
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred during purchase.");
+  }
+};
 
   return (
     <main className="p-8 bg-gray-900 min-h-screen text-gray-100">
