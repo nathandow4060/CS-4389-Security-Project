@@ -3,13 +3,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const backendUrl = ${process.env.VITE_API_URL}/api/purchase;
+  const backendUrl = `${process.env.VITE_API_URL}/purchase`;
   const username = process.env.BACKEND_ADMIN_USER;
   const password = process.env.BACKEND_ADMIN_PASS;
 
   // Basic Auth header
-  const authHeader =
-    "Basic " + Buffer.from(${username}:${password}).toString("base64");
+  const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
 
   try {
     const response = await fetch(backendUrl, {
