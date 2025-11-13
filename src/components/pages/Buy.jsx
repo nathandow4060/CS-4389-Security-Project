@@ -132,7 +132,7 @@ export default function Buy() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {cart.map((item) => (
                 <div key={item.id} className="bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col">
-                  <img src={item.img_url} alt={item.name_of_product} className="w-full h-40 object-cover" />
+                  <img src={item.image_url} alt={item.name_of_product} className="w-full h-40 object-cover" />
                   <div className="p-4 flex flex-col gap-2">
                     <h4 className="text-lg font-semibold">{item.name_of_product}</h4>
                     <p className="text-indigo-400 font-bold">
