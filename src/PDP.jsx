@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { getProductById } from "./api.js";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -11,14 +12,11 @@ export default function ProductPage() {
     let ok = true;
     (async () => {
       try {
-        const res = await fetch("/api/games.json");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const list = await res.json();
-        const found = list.find((g) => g.id === Number(id));
-        if (!found) throw new Error("Not found");
-        if (ok) setGame(found);
+        const product = await getProductById(id);
+        console.log("Product from API (PDP):", product);
+        if (ok) setGame(product);
       } catch (e) {
-        if (ok) setErr(e.message || "Failed to load");
+        if (ok) setErr(e.message || "Failed to load product");
       } finally {
         if (ok) setLoading(false);
       }
@@ -29,29 +27,31 @@ export default function ProductPage() {
   }, [id]);
 
   const handleBuy = () => {
+    if (!game) return;
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push({ id: game.id, name: game.name, price: game.price });
+    cart.push({ id: game.id, name: game.name_of_product, price: game.price });
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`${game.name} added to cart`);
+    alert(`${game.name_of_product} added to cart`); // Fixed: proper template literal
   };
 
   if (loading) return <div className="p-8 text-gray-300">Loading…</div>;
   if (err) return <div className="p-8 text-red-400">Error: {err}</div>;
+  if (!game) return <div className="p-8 text-red-400">Product not found</div>;
 
   return (
-    <main className="p-6 max-w-5xl mx-auto text-gray-100">
+    <main className="p-6 max-w-5xl mx-auto text-gray-100 bg-gray-900 min-h-screen">
       <Link to="/" className="text-indigo-400 hover:underline">
         &larr; Back
       </Link>
       <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
         <img
-          src={game.img}
-          alt={game.name}
+          src={game.img_url}
+          alt={game.name_of_product}
           referrerPolicy="no-referrer"
           className="w-full h-72 object-cover rounded-lg"
         />
         <div>
-          <h1 className="text-3xl font-bold">{game.name}</h1>
+          <h1 className="text-3xl font-bold">{game.name_of_product}</h1>
           <p className="mt-2 text-gray-300">{game.description}</p>
           <p className="mt-4 text-2xl font-semibold text-indigo-400">
             ${Number(game.price).toFixed(2)}
