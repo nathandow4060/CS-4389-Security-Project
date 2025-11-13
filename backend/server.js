@@ -37,6 +37,9 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false, // Allow embedding for development
 }));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // 2. Additional security headers
 app.use((req, res, next) => {
   // Prevent clickjacking
@@ -63,26 +66,42 @@ console.log('🛡️  RASP security monitoring enabled');
 
 // ===== CORE MIDDLEWARE =====
 const allowedOrigins = [
-  "https://cs-4389-security-project-5itx3sd6g-nate-dows-projects.vercel.app", // your Vercel app URL
-  "http://localhost:5173" // for local dev
+  "http://localhost:5173",
+  /\.vercel\.app$/   // allow ANY vercel frontend
 ];
 
+
 // 1. Body parsers
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
+
 ); //hook up front end API
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
+const allowedOrigins = [
+  "http://localhost:5173",
+  /\.vercel\.app$/,  // allow ALL Vercel preview + production URLs
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow non-browser tools like Postman
+    if (!origin) return callback(null, true);
+
+    // Check allowed origins
+    const isAllowed = allowedOrigins.some(o =>
+      (typeof o === "string" && o === origin) ||
+      (o instanceof RegExp && o.test(origin))
+    );
+
+    if (isAllowed) {
+      return callback(null, true);
+    } else {
+      console.log("🔥 BLOCKED BY CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+}));
+
 ); //hook up front end API
 
 // 2. Logging middleware

@@ -7,6 +7,7 @@ export default function Buy() {
   const [cardNumber, setCardNumber] = useState("");
   const [name, setName] = useState("");
   const [success, setSuccess] = useState(false);
+  const [purchaseKeys, setPurchaseKeys] = useState([]);
 
   const total = cart.reduce((acc, g) => acc + g.price * g.quantity, 0);
 
@@ -24,12 +25,73 @@ export default function Buy() {
     return sum % 10 === 0;
   };
 
-  const handlePurchase = (e) => {
+  const handlePurchase = async (e) => {
     e.preventDefault();
-    if (!name || !cardNumber) return alert("Please enter your name and card number");
-    if (!isValidCard(cardNumber)) return alert("Invalid card number");
-    setSuccess(true);
-    clearCart();
+
+    if (!name || !cardNumber) {
+      return alert("Please enter your name and card number");
+    }
+
+    if (!isValidCard(cardNumber)) {
+      return alert("Invalid card number");
+    }
+
+    // Hardcoded until login is implemented
+    const accountId = 2;
+
+    try {
+      const confirmations = [];
+
+      for (const item of cart) {
+        // Make one request per quantity
+        for (let i = 0; i < item.quantity; i++) {
+          // Use the Vercel serverless function instead of hitting backend directly
+          const res = await fetch(`/api/purchase`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              accountId,
+              productId: item.id,
+            }),
+          });
+
+          console.log("Purchase response status:", res.status);
+
+          // Handle 204 No Content
+          if (res.status === 204) {
+            console.warn("Received 204 No Content - this might indicate a backend issue");
+            continue;
+          }
+
+          const data = await res.json();
+          console.log("Purchase response JSON:", data);
+
+          if (!res.ok || data.status === "Purchase Failed") {
+            const errorMsg = data.message || "Unknown error occurred";
+            return alert(`Purchase failed for ${item.name_of_product}: ${errorMsg}`);
+          }
+
+          // Store the confirmation data
+          confirmations.push({
+            game: item.name_of_product,
+            key: data.data?.key || "N/A",
+            purchaseId: data.data?.purchaseHistoryId,
+          });
+        }
+      }
+
+      console.log("All Purchase Confirmations:", confirmations);
+
+      setPurchaseKeys(confirmations);
+      setSuccess(true);
+      clearCart();
+
+    } catch (err) {
+      console.error("PURCHASE ERROR:", err);
+      alert(`An error occurred during purchase: ${err.message}`);
+    }
   };
 
   return (
@@ -37,11 +99,27 @@ export default function Buy() {
       <h2 className="text-3xl font-bold mb-6 text-center text-indigo-400">Checkout</h2>
 
       {success ? (
-        <div className="text-center">
+        <div className="max-w-2xl mx-auto text-center">
           <h3 className="text-2xl font-semibold text-green-400 mb-4">Purchase Successful! 🎉</h3>
+          
+          {purchaseKeys.length > 0 && (
+            <div className="bg-gray-800 rounded-xl p-6 mb-6 text-left">
+              <h4 className="text-xl font-semibold mb-4 text-indigo-400">Your Game Keys:</h4>
+              <div className="space-y-3">
+                {purchaseKeys.map((purchase, idx) => (
+                  <div key={idx} className="bg-gray-700 p-4 rounded-lg">
+                    <p className="font-semibold text-lg">{purchase.game}</p>
+                    <p className="text-gray-300 font-mono mt-2">Key: {purchase.key}</p>
+                    <p className="text-gray-400 text-sm mt-1">Purchase ID: {purchase.purchaseId}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
           <Link
             to="/"
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white"
+            className="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-semibold"
           >
             Back to Home
           </Link>
