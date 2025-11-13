@@ -32,25 +32,33 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
-  // Fetch product data once on app load
+
   useEffect(() => {
-    let ok = true;
-    (async () => {
-      try {
-        const data = await getProducts();
-        if (ok) setGames(data);
-      } catch (e) {
-        console.error("Failed to fetch products:", e);
-        if (ok) {
-          setErr("Failed to load products — showing fallback data.");
+  let ok = true;
+  (async () => {
+    try {
+      const data = await getProducts();
+      if (ok) {
+        if (!data || !data.length) {
+          console.warn("Empty product list — using fallback data.");
           setGames(LOCAL_GAMES);
+        } else {
+          setGames(data);
         }
-      } finally {
-        if (ok) setLoading(false);
       }
-    })();
-    return () => { ok = false; };
-  }, []);
+    } catch (e) {
+      console.error("Failed to fetch products:", e);
+      if (ok) {
+        setErr("Failed to load products — showing fallback data.");
+        setGames(LOCAL_GAMES);
+      }
+    } finally {
+      if (ok) setLoading(false);
+    }
+  })();
+  return () => { ok = false; };
+}, []);
+
 
   const addToCart = (game) => setCart((prev) => [...prev, game]);
 
