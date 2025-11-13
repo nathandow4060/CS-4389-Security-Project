@@ -127,26 +127,37 @@ exports.createPurchase = async (req, res, next) => {
     */
 
     //The product has sold out of keys
-    if(allocatedKey == null){
-      const product_payload = {
-        id: parsedProductId,
-        name: product.rows[0].name_of_product,
-        developer: product.rows[0].developer,
-        price: product.rows[0].price,
-      }
-      res.status(409).json({ status: 'Purchase Failed', accountId: parsedAccountId, productData: product_payload, message: "No product keys in stock for this product"});
-    }
+    //The product has sold out of keys
+if (allocatedKey == null) {
+  const product_payload = {
+    id: parsedProductId,
+    name: product.rows[0].name_of_product,
+    developer: product.rows[0].developer,
+    price: product.rows[0].price,
+  };
 
-    else{ //Success: game has been purchased
-      const confirmation = buildConfirmation({
-      purchaseId: historyRecord.id,
-      accountId: parsedAccountId,
-      product: product.rows[0],
-      productKey: allocatedKey,
-      purchasedAt,
-      });
-      res.status(201).json({ status: 'success', data: confirmation });
-    }
+  return res.status(409).json({
+    status: 'Purchase Failed',
+    accountId: parsedAccountId,
+    productData: product_payload,
+    message: "No product keys in stock for this product"
+  });
+}
+
+//Success: game has been purchased
+const confirmation = buildConfirmation({
+  purchaseId: historyRecord.id,
+  accountId: parsedAccountId,
+  product: product.rows[0],
+  productKey: allocatedKey,
+  purchasedAt,
+});
+
+return res.status(201).json({
+  status: "success",
+  data: confirmation
+});
+
     
   } catch (err) {
     //ETHAN: Rollback likely no longer works due to service implementation
