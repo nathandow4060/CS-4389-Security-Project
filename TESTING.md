@@ -41,13 +41,16 @@ Tests are located in `backend/tests/` folder:
 - `errorHandler.test.js` - Error handling middleware tests (6 tests)
 - `logger.test.js` - Logging middleware tests (5 tests)
 - `server.test.js` - API integration tests (4 tests)
+- `products.test.js` - API endpoint tests for products (5 tests)
+
 
 ### Backend Test Results
 
-All 15 backend tests passing:
+All 20 backend tests passing:
 - Error Handler Middleware: 6 passing
 - Logger Middleware: 5 passing
 - Server API Integration: 4 passing
+- Products API endpoints: 5 passing
 
 ### Writing New Backend Tests
 ```javascript

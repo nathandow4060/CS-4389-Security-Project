@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 
 // fallback local data (same as /public/api/games.json)
+=======
+import { getProducts } from "../../api.js";
+
+/* fallback local data (same as /public/api/games.json)
+>>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
 const LOCAL_GAMES = [
   { id: 1, name: "Elden Ring", price: 59.99, topSeller: true, img: "/images/eldenring.jpg", description: "Open-world action RPG across the Lands Between." },
   { id: 2, name: "Starfield", price: 69.99, topSeller: true, img: "/images/starfield.jpg", description: "Bethesda’s space RPG focused on exploration and factions." },
@@ -10,6 +16,10 @@ const LOCAL_GAMES = [
   { id: 5, name: "God of War Ragnarok", price: 59.99, topSeller: false, img: "/images/godofwar.avif", description: "Norse saga finale with weighty combat and emotional story." },
   { id: 6, name: "Cyberpunk 2077", price: 49.99, topSeller: false, img: "/images/cyberpunk.jpg", description: "First-person RPG set in neon-drenched Night City." }
 ];
+<<<<<<< HEAD
+=======
+*/
+>>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
 
 function CartButton({ cart }) {
   const [open, setOpen] = useState(false);
@@ -62,6 +72,7 @@ export default function GamesList() {
   const [games, setGames] = useState(LOCAL_GAMES);
 
   useEffect(() => {
+<<<<<<< HEAD
     (async () => {
       try {
         const res = await fetch("/api/games.json");
@@ -73,6 +84,21 @@ export default function GamesList() {
       }
     })();
   }, []);
+=======
+      let ok = true;
+      (async () => {
+        try {
+          const data = await getProducts();
+          if (ok) setGames(data);
+        } catch (e) {
+          if (ok) setErr(e.message || "Failed to load products");
+        } finally {
+          if (ok) setLoading(false);
+        }
+      })();
+      return () => { ok = false; };
+    }, []);
+>>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
 
   const topSellers = games.filter((g) => g.topSeller);
   const filteredGames = games.filter((g) =>
@@ -119,11 +145,19 @@ export default function GamesList() {
                 {topSellers.map((game) => (
                   <div key={game.id} className="min-w-full flex-shrink-0 relative">
                     <Link to={`/product/${game.id}`}>
+<<<<<<< HEAD
                       <img src={game.img} alt={game.name} className="w-full h-64 object-cover" />
                     </Link>
                     <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
                       <h3 className="text-xl font-semibold">
                         <Link to={`/product/${game.id}`}>{game.name}</Link>
+=======
+                      <img src={game.img_url} alt={game.name_of_product} className="w-full h-64 object-cover" />
+                    </Link>
+                    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
+                      <h3 className="text-xl font-semibold">
+                        <Link to={`/product/${game.id}`}>{game.name_of_product}</Link>
+>>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
                       </h3>
                       <p className="text-indigo-400 font-bold">${Number(game.price).toFixed(2)}</p>
                     </div>
@@ -155,11 +189,19 @@ export default function GamesList() {
                 className="bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105"
               >
                 <Link to={`/product/${game.id}`}>
+<<<<<<< HEAD
                   <img src={game.img} alt={game.name} className="w-full h-48 object-cover" />
                 </Link>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold">
                     <Link to={`/product/${game.id}`}>{game.name}</Link>
+=======
+                  <img src={game.img_url} alt={game.name_of_product} className="w-full h-48 object-cover" />
+                </Link>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold">
+                    <Link to={`/product/${game.id}`}>{game.name_of_product}</Link>
+>>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
                   </h3>
                   <p className="text-sm text-gray-400">Product ID {game.id}</p>
                   <p className="text-indigo-400 font-bold mt-2">${Number(game.price).toFixed(2)}</p>
@@ -177,4 +219,8 @@ export default function GamesList() {
       </main>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
