@@ -35,27 +35,38 @@ export default function Buy() {
     return alert("Invalid card number");
   }
 
-  // You should get this from user auth later, but hardcode for now:
+  // Hardcoded until login is implemented
   const accountId = 1;
 
   try {
     const backendUrl = import.meta.env.VITE_API_URL;
+
+    const authString = btoa(
+      `${import.meta.env.VITE_BACKEND_ADMIN_USER}:${import.meta.env.VITE_BACKEND_ADMIN_PASS}`
+    );
+
     const confirmations = [];
 
     for (const item of cart) {
-      // Make 1 request per quantity
+      // Make one request per quantity
       for (let i = 0; i < item.quantity; i++) {
-		  console.log("Purchase URL:", `${backendUrl}/api/purchase`);
         const res = await fetch(`${backendUrl}/api/purchase`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Basic ${authString}`,
+          },
           body: JSON.stringify({
             accountId,
-            productId: item.id
+            productId: item.id,
           }),
         });
 
+        // Debug for 204 / CORS issues
+        console.log("Purchase response status:", res.status);
+
         const data = await res.json();
+        console.log("Purchase response JSON:", data);
 
         if (!res.ok || data.status === "Purchase Failed") {
           return alert(`Purchase failed for ${item.name_of_product}: ${data.message}`);
@@ -65,16 +76,17 @@ export default function Buy() {
       }
     }
 
-    console.log("Purchase confirmations:", confirmations);
+    console.log("All Purchase Confirmations:", confirmations);
+
     setSuccess(true);
     clearCart();
 
   } catch (err) {
-  console.error("PURCHASE ERROR:", err);
-  alert("An error occurred during purchase.");
-}
-
+    console.error("PURCHASE ERROR:", err);
+    alert("An error occurred during purchase.");
+  }
 };
+
 
   return (
     <main className="p-8 bg-gray-900 min-h-screen text-gray-100">
