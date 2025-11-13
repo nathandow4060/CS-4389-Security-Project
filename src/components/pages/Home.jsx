@@ -7,7 +7,6 @@ import { getProducts } from "../../api.js";
 export default function Home( { games }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const { addToCart } = useCart();
 
@@ -22,7 +21,6 @@ export default function Home( { games }) {
   }, [topSellers.length]);
 
   //Added this to be consitant with GameDetails
-  if (loading) return <div className="p-8 text-gray-300">Loading…</div>;
   if (err) return <div className="p-8 text-red-400">Error: {err}</div>;
 
   return (
