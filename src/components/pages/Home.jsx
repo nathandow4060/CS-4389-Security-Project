@@ -8,7 +8,7 @@ export default function Home() {
   const [games, setGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const { addToCart } = useCart();
 
