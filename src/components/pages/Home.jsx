@@ -37,7 +37,7 @@ export default function Home( { games }) {
               {topSellers.map(game => (
                 <div key={game.id} className="min-w-full flex-shrink-0 relative">
                   <Link to={`/products/${game.id}`}>
-                    <img src={game.img_url} alt={game.name_of_product} className="w-full h-64 object-cover" />
+                    <img src={game.image_url} alt={game.name_of_product} className="w-full h-64 object-cover" />
                   </Link>
                 </div>
               ))}
@@ -63,7 +63,7 @@ export default function Home( { games }) {
           {filteredGames.map((game) => (
             <div key={game.id} className="bg-gray-800 rounded-xl overflow-hidden shadow-lg">
               <Link to={`/products/${game.id}`}>
-                <img src={game.img_url} alt={game.name_of_product} className="w-full h-48 object-cover" />
+                <img src={game.image_url} alt={game.name_of_product} className="w-full h-48 object-cover" />
               </Link>
               <div className="p-4">
                 <h3 className="text-lg font-semibold">{game.name_of_product}</h3>
