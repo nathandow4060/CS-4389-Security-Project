@@ -63,7 +63,7 @@ console.log('🛡️  RASP security monitoring enabled');
 
 // ===== CORE MIDDLEWARE =====
 const allowedOrigins = [
-  "https://cs-4389-security-project-5itx3sd6g-nate-dows-projects.vercel.app", // your Vercel app URL
+  "https://cs-4389-security-project-git-purchase-910bb4-nate-dows-projects.vercel.app/", // your Vercel app URL
   "http://localhost:5173" // for local dev
 ];
 

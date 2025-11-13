@@ -45,6 +45,7 @@ export default function Buy() {
     for (const item of cart) {
       // Make 1 request per quantity
       for (let i = 0; i < item.quantity; i++) {
+		  console.log("Purchase URL:", `${backendUrl}/api/purchase`);
         const res = await fetch(`${backendUrl}/api/purchase`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
