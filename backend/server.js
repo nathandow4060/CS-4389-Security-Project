@@ -46,6 +46,10 @@ app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 const testDBRoute = require("./routes/testdb");
 app.use("/api", testDBRoute);
 
+const gameRoutes = require("./routes/games");
+app.use("/api", gameRoutes);
+
+
 // npm i ejs; This is a view engine that can be used to render html
 /*
 http://localhost:8080/
