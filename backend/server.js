@@ -8,6 +8,7 @@ const helmet = require('helmet');
 dotenv.config();
 
 // ===== IMPORT MIDDLEWARE =====
+const { raspMiddleware } = require('./middleware/raspSecurity');
 const { devLogger, prodLogger, requestLogger } = require('./middleware/logger');
 const { notFoundHandler, globalErrorHandler, AppError } = require('./middleware/errorHandler');
 
@@ -55,6 +56,10 @@ app.use((req, res, next) => {
   
   next();
 });
+
+// 3. RASP - Runtime Application Self-Protection
+app.use(raspMiddleware);
+console.log('🛡️  RASP security monitoring enabled');
 
 // ===== CORE MIDDLEWARE =====
 const allowedOrigins = [
@@ -130,6 +135,16 @@ app.get('/test-error', (req, res, next) => {
 // Test programming crash (500)
 app.get('/test-crash', (req, res) => {
   throw new Error('Simulated server crash for testing!');
+});
+
+// Security monitoring endpoint (for admins)
+const { getSecurityStats } = require('./middleware/raspSecurity');
+app.get('/api/security/stats', (req, res) => {
+  const stats = getSecurityStats();
+  res.json({
+    status: 'success',
+    data: stats,
+  });
 });
 
 // ===== ERROR HANDLING =====
