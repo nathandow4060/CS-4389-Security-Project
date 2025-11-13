@@ -40,7 +40,7 @@ export default function CartButton() {
                   {cart.map((item) => (
                     <li key={item.id} className="flex justify-between items-center bg-gray-800 rounded-lg px-3 py-2">
                       <div className="flex items-center gap-3">
-                        <img src={item.img_url} alt={item.name_of_product} className="w-12 h-12 object-cover rounded"/>
+                        <img src={item.image_url} alt={item.name_of_product} className="w-12 h-12 object-cover rounded"/>
                         <div>
                           <p className="font-semibold">{item.name_of_product}</p>
                           <p className="text-indigo-400 font-bold">${item.price} × {item.quantity}</p>

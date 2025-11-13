@@ -29,7 +29,7 @@ export default function GameDetail({ games }) {
 
       <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
         <img
-          src={game.img_url}
+          src={game.image_url}
           alt={game.name_of_product}
           className="w-full object-contain rounded-lg"
         />
