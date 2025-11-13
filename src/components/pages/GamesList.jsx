@@ -1,25 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-
-// fallback local data (same as /public/api/games.json)
-=======
 import { getProducts } from "../../api.js";
 
-/* fallback local data (same as /public/api/games.json)
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
+// Fallback local data (used if API fails)
 const LOCAL_GAMES = [
-  { id: 1, name: "Elden Ring", price: 59.99, topSeller: true, img: "/images/eldenring.jpg", description: "Open-world action RPG across the Lands Between." },
-  { id: 2, name: "Starfield", price: 69.99, topSeller: true, img: "/images/starfield.jpg", description: "Bethesda’s space RPG focused on exploration and factions." },
-  { id: 3, name: "Spider-Man 2", price: 59.99, topSeller: true, img: "/images/spiderman2.webp", description: "Swing through NYC as Peter and Miles with symbiote powers." },
-  { id: 4, name: "Zelda Tears of the Kingdom", price: 69.99, topSeller: false, img: "/images/zelda.jpg", description: "Inventive sandbox adventure across Hyrule, skies, and depths." },
-  { id: 5, name: "God of War Ragnarok", price: 59.99, topSeller: false, img: "/images/godofwar.avif", description: "Norse saga finale with weighty combat and emotional story." },
-  { id: 6, name: "Cyberpunk 2077", price: 49.99, topSeller: false, img: "/images/cyberpunk.jpg", description: "First-person RPG set in neon-drenched Night City." }
+  {
+    id: 1,
+    name: "Elden Ring",
+    price: 59.99,
+    topSeller: true,
+    img: "/images/eldenring.jpg",
+    description: "Open-world action RPG across the Lands Between.",
+  },
+  {
+    id: 2,
+    name: "Starfield",
+    price: 69.99,
+    topSeller: true,
+    img: "/images/starfield.jpg",
+    description: "Bethesda’s space RPG focused on exploration and factions.",
+  },
+  {
+    id: 3,
+    name: "Spider-Man 2",
+    price: 59.99,
+    topSeller: true,
+    img: "/images/spiderman2.webp",
+    description: "Swing through NYC as Peter and Miles with symbiote powers.",
+  },
+  {
+    id: 4,
+    name: "Zelda Tears of the Kingdom",
+    price: 69.99,
+    topSeller: false,
+    img: "/images/zelda.jpg",
+    description: "Inventive sandbox adventure across Hyrule, skies, and depths.",
+  },
+  {
+    id: 5,
+    name: "God of War Ragnarok",
+    price: 59.99,
+    topSeller: false,
+    img: "/images/godofwar.avif",
+    description: "Norse saga finale with weighty combat and emotional story.",
+  },
+  {
+    id: 6,
+    name: "Cyberpunk 2077",
+    price: 49.99,
+    topSeller: false,
+    img: "/images/cyberpunk.jpg",
+    description: "First-person RPG set in neon-drenched Night City.",
+  },
 ];
-<<<<<<< HEAD
-=======
-*/
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
 
 function CartButton({ cart }) {
   const [open, setOpen] = useState(false);
@@ -43,15 +76,21 @@ function CartButton({ cart }) {
             <h2 className="text-2xl font-bold mb-4 text-indigo-400">Your Cart</h2>
             <ul className="space-y-2 mb-4 max-h-60 overflow-y-auto">
               {cart.map((item, i) => (
-                <li key={i} className="flex justify-between bg-gray-700 rounded-lg px-3 py-2">
-                  <span>{item.name}</span>
+                <li
+                  key={i}
+                  className="flex justify-between bg-gray-700 rounded-lg px-3 py-2"
+                >
+                  <span>{item.name_of_product ?? item.name}</span>
                   <span>${Number(item.price).toFixed(2)}</span>
                 </li>
               ))}
             </ul>
             <p className="text-lg font-semibold mb-4">Total ${total.toFixed(2)}</p>
             <div className="flex justify-end gap-4">
-              <button onClick={() => setOpen(false)} className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700">
+              <button
+                onClick={() => setOpen(false)}
+                className="px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700"
+              >
                 Close
               </button>
               <button className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white">
@@ -69,49 +108,76 @@ export default function GamesList() {
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [games, setGames] = useState(LOCAL_GAMES);
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
 
   useEffect(() => {
-<<<<<<< HEAD
+    let ok = true;
     (async () => {
       try {
-        const res = await fetch("/api/games.json");
-        if (!res.ok) throw new Error("bad status");
-        const list = await res.json();
-        setGames(Array.isArray(list) ? list : LOCAL_GAMES);
-      } catch {
+        const data = await getProducts();
+        if (!ok) return;
+
+        if (Array.isArray(data) && data.length) {
+          setGames(data);
+        } else {
+          setGames(LOCAL_GAMES);
+        }
+      } catch (e) {
+        if (!ok) return;
+        setErr(e.message || "Failed to load products");
         setGames(LOCAL_GAMES);
+      } finally {
+        if (ok) setLoading(false);
       }
     })();
+    return () => {
+      ok = false;
+    };
   }, []);
-=======
-      let ok = true;
-      (async () => {
-        try {
-          const data = await getProducts();
-          if (ok) setGames(data);
-        } catch (e) {
-          if (ok) setErr(e.message || "Failed to load products");
-        } finally {
-          if (ok) setLoading(false);
-        }
-      })();
-      return () => { ok = false; };
-    }, []);
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
 
-  const topSellers = games.filter((g) => g.topSeller);
-  const filteredGames = games.filter((g) =>
-    g.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const topSellers = games.filter(
+    (g) => g.topSeller || g.is_top_seller || g.top_seller
   );
+
+  const filteredGames = games.filter((g) => {
+    const name = (g.name_of_product ?? g.name ?? "").toLowerCase();
+    return name.includes(searchTerm.toLowerCase());
+  });
 
   useEffect(() => {
     if (!topSellers.length) return;
-    const id = setInterval(() => setCarouselIndex((i) => (i + 1) % topSellers.length), 4000);
+    const id = setInterval(
+      () => setCarouselIndex((i) => (i + 1) % topSellers.length),
+      4000
+    );
     return () => clearInterval(id);
   }, [topSellers.length]);
 
   const addToCart = (game) => setCart((prev) => [...prev, game]);
+
+  if (loading) {
+    return (
+      <div className="bg-gray-900 text-gray-100 min-h-screen flex items-center justify-center">
+        Loading…
+      </div>
+    );
+  }
+
+  if (err && !games.length) {
+    return (
+      <div className="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center">
+        <p className="text-red-400 mb-4">Error: {err}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-900 text-gray-100 min-h-screen">
@@ -121,7 +187,6 @@ export default function GamesList() {
           <Link to="/">GameVault</Link>
         </h1>
         <div className="flex items-center gap-3">
-          {/* Profile Button */}
           <Link
             to="/profile"
             className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-white font-medium"
@@ -136,33 +201,44 @@ export default function GamesList() {
       <main className="p-8">
         {!!topSellers.length && (
           <section className="mb-10 relative">
-            <h2 className="text-2xl font-semibold mb-4 text-center">🔥 Top Sellers</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-center">
+              🔥 Top Sellers
+            </h2>
             <div className="relative w-full overflow-hidden rounded-xl shadow-lg">
               <div
                 className="flex transition-transform duration-700 ease-in-out"
-                style={{ transform: `translateX(-${carouselIndex * 100}%)` }}
+                style={{
+                  transform: `translateX(-${carouselIndex * 100}%)`,
+                }}
               >
-                {topSellers.map((game) => (
-                  <div key={game.id} className="min-w-full flex-shrink-0 relative">
-                    <Link to={`/product/${game.id}`}>
-<<<<<<< HEAD
-                      <img src={game.img} alt={game.name} className="w-full h-64 object-cover" />
-                    </Link>
-                    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
-                      <h3 className="text-xl font-semibold">
-                        <Link to={`/product/${game.id}`}>{game.name}</Link>
-=======
-                      <img src={game.img_url} alt={game.name_of_product} className="w-full h-64 object-cover" />
-                    </Link>
-                    <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
-                      <h3 className="text-xl font-semibold">
-                        <Link to={`/product/${game.id}`}>{game.name_of_product}</Link>
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
-                      </h3>
-                      <p className="text-indigo-400 font-bold">${Number(game.price).toFixed(2)}</p>
+                {topSellers.map((game) => {
+                  const displayName =
+                    game.name_of_product ?? game.name ?? "Untitled";
+                  const imageSrc = game.img_url ?? game.img;
+
+                  return (
+                    <div
+                      key={game.id}
+                      className="min-w-full flex-shrink-0 relative"
+                    >
+                      <Link to={`/product/${game.id}`}>
+                        <img
+                          src={imageSrc}
+                          alt={displayName}
+                          className="w-full h-64 object-cover"
+                        />
+                      </Link>
+                      <div className="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
+                        <h3 className="text-xl font-semibold">
+                          <Link to={`/product/${game.id}`}>{displayName}</Link>
+                        </h3>
+                        <p className="text-indigo-400 font-bold">
+                          ${Number(game.price).toFixed(2)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </section>
@@ -181,46 +257,50 @@ export default function GamesList() {
 
         {/* GAME CATALOGUE */}
         <section>
-          <h2 className="text-2xl font-semibold mb-6 text-center">🎮 Game Catalogue</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-center">
+            🎮 Game Catalogue
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredGames.map((game) => (
-              <div
-                key={game.id}
-                className="bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105"
-              >
-                <Link to={`/product/${game.id}`}>
-<<<<<<< HEAD
-                  <img src={game.img} alt={game.name} className="w-full h-48 object-cover" />
-                </Link>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">
-                    <Link to={`/product/${game.id}`}>{game.name}</Link>
-=======
-                  <img src={game.img_url} alt={game.name_of_product} className="w-full h-48 object-cover" />
-                </Link>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">
-                    <Link to={`/product/${game.id}`}>{game.name_of_product}</Link>
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
-                  </h3>
-                  <p className="text-sm text-gray-400">Product ID {game.id}</p>
-                  <p className="text-indigo-400 font-bold mt-2">${Number(game.price).toFixed(2)}</p>
-                  <button
-                    onClick={() => addToCart(game)}
-                    className="bg-indigo-600 hover:bg-indigo-700 mt-3 px-3 py-1.5 rounded-lg text-sm font-medium w-full"
-                  >
-                    Add to Cart
-                  </button>
+            {filteredGames.map((game) => {
+              const displayName =
+                game.name_of_product ?? game.name ?? "Untitled";
+              const imageSrc = game.img_url ?? game.img;
+
+              return (
+                <div
+                  key={game.id}
+                  className="bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-indigo-500/50 transform transition hover:-translate-y-2 hover:scale-105"
+                >
+                  <Link to={`/product/${game.id}`}>
+                    <img
+                      src={imageSrc}
+                      alt={displayName}
+                      className="w-full h-48 object-cover"
+                    />
+                  </Link>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold">
+                      <Link to={`/product/${game.id}`}>{displayName}</Link>
+                    </h3>
+                    <p className="text-sm text-gray-400">
+                      Product ID {game.id}
+                    </p>
+                    <p className="text-indigo-400 font-bold mt-2">
+                      ${Number(game.price).toFixed(2)}
+                    </p>
+                    <button
+                      onClick={() => addToCart(game)}
+                      className="bg-indigo-600 hover:bg-indigo-700 mt-3 px-3 py-1.5 rounded-lg text-sm font-medium w-full"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       </main>
     </div>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610

@@ -1,44 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-
-export default function ProductPage() {
-  const { id } = useParams();
-  const [game, setGame] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
-
-  useEffect(() => {
-    let ok = true;
-    (async () => {
-      try {
-        const res = await fetch("/api/games.json");
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const list = await res.json();
-        const found = list.find((g) => g.id === Number(id));
-        if (!found) throw new Error("Not found");
-        if (ok) setGame(found);
-      } catch (e) {
-        if (ok) setErr(e.message || "Failed to load");
-      } finally {
-        if (ok) setLoading(false);
-      }
-    })();
-    return () => {
-      ok = false;
-    };
-  }, [id]);
-
-  const handleBuy = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    cart.push({ id: game.id, name: game.name, price: game.price });
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`${game.name} added to cart`);
-  };
-
-  if (loading) return <div className="p-8 text-gray-300">Loading…</div>;
-  if (err) return <div className="p-8 text-red-400">Error: {err}</div>;
-=======
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx";
@@ -47,8 +6,8 @@ export default function GameDetail({ games }) {
   const { id } = useParams();
   const { addToCart } = useCart();
 
-  // Convert route param (string) to number for matching
-  const game = games.find(g => String(g.id) === String(id));
+  // route param is string, ids may be numbers -> normalize both
+  const game = games.find((g) => String(g.id) === String(id));
 
   if (!game) {
     return (
@@ -61,33 +20,12 @@ export default function GameDetail({ games }) {
       </div>
     );
   }
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
 
   return (
     <main className="p-6 max-w-5xl mx-auto text-gray-100">
       <Link to="/" className="text-indigo-400 hover:underline">
         &larr; Back
       </Link>
-<<<<<<< HEAD
-      <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
-        <img
-          src={game.img}
-          alt={game.name}
-          referrerPolicy="no-referrer"
-          className="w-full h-72 object-cover rounded-lg"
-        />
-        <div>
-          <h1 className="text-3xl font-bold">{game.name}</h1>
-          <p className="mt-2 text-gray-300">{game.description}</p>
-          <p className="mt-4 text-2xl font-semibold text-indigo-400">
-            ${Number(game.price).toFixed(2)}
-          </p>
-          <button
-            onClick={handleBuy}
-            className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg font-medium"
-          >
-            Buy
-=======
 
       <div className="mt-4 grid md:grid-cols-2 gap-6 bg-gray-800 rounded-xl p-6 shadow-lg">
         <img
@@ -101,9 +39,7 @@ export default function GameDetail({ games }) {
             <h1 className="text-3xl font-bold">{game.name_of_product}</h1>
 
             {game.description && (
-              <p className="mt-2 text-gray-300">
-                {game.description}
-              </p>
+              <p className="mt-2 text-gray-300">{game.description}</p>
             )}
 
             <p className="mt-4 text-2xl font-semibold text-indigo-400">
@@ -116,7 +52,6 @@ export default function GameDetail({ games }) {
             className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-lg font-medium"
           >
             Add to Cart
->>>>>>> ba582f12a7958d9acb102e17983cc1d9ae9e7610
           </button>
         </div>
       </div>
