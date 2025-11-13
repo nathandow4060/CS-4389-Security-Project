@@ -4,7 +4,7 @@ import { useCart } from "../../context/CartContext.jsx"; // adjust path if neede
 import { getProducts } from "../../api.js";
 
 
-export default function Home( { games, addToCart }) {
+export default function Home( { games }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [loading, setLoading] = useState(false);

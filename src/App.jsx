@@ -82,8 +82,8 @@ export default function App() {
 
         {/* Routes */}
         <Routes>
-          <Route path="/" element={<Home games={games} addToCart={addToCart} />} />
-          <Route path="/game/:id" element={<GameDetail games={games} addToCart={addToCart} />} />
+          <Route path="/" element={<Home games={games}} />} />
+          <Route path="/game/:id" element={<GameDetail games={games}} />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/login" element={<Login />} />
