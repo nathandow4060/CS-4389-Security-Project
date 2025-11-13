@@ -37,6 +37,9 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false, // Allow embedding for development
 }));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // 2. Additional security headers
 app.use((req, res, next) => {
   // Prevent clickjacking
