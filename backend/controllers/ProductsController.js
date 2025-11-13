@@ -21,7 +21,7 @@ exports.getAllProducts = async (req, res, next) => {
 exports.getProductById = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
-    if (Number.isNaN(id)) throw new AppError('Invalid product id', 400);
+    if (Number.isNaN(id) || id <= 0) throw new AppError('Invalid product id', 400);
     const result = await db.query(
       `SELECT *
        FROM product WHERE id = $1`,
@@ -39,7 +39,6 @@ exports.getProductById = async (req, res, next) => {
 exports.createProduct = async (req, res, next) => {
   try {
     const {
-      digital_key,
       name_of_product,
       developer,
       price,
@@ -50,10 +49,10 @@ exports.createProduct = async (req, res, next) => {
 
     const insert = await db.query(
       `INSERT INTO product
-        (digital_key, name_of_product, developer, price, image_url, description, esrb_rating)
-       VALUES ($1,$2,$3,$4,$5,$6,$7)
-       RETURNING id, digital_key, name_of_product, developer, price, image_url, description, esrb_rating`,
-      [digital_key, name_of_product, developer, price, image_url, description, esrb_rating]
+        (name_of_product, developer, price, image_url, description, esrb_rating)
+       VALUES ($1,$2,$3,$4,$5,$6)
+       RETURNING id, name_of_product, developer, price, image_url, description, esrb_rating`,
+      [name_of_product, developer, price, image_url, description, esrb_rating]
     );
 
     res.status(201).json({ status: 'success', data: insert.rows[0] });
@@ -68,7 +67,7 @@ exports.updateProduct = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     //if id is not a number throw error
-    if (Number.isNaN(id)) throw new AppError('Invalid product id', 400);
+    if (Number.isNaN(id) || id <= 0) throw new AppError('Invalid product id', 400);
 
     const payload = (req.body && typeof req.body === 'object') ? req.body : {};
     // Build a dynamic UPSERT that only sets provided fields
@@ -128,7 +127,7 @@ exports.updateProduct = async (req, res, next) => {
 exports.deleteProduct = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
-    if (Number.isNaN(id)) throw new AppError('Invalid product id', 400);
+    if (Number.isNaN(id) || id <= 0) throw new AppError('Invalid product id', 400);
     const result = await db.query('DELETE FROM product WHERE id = $1 RETURNING id', [id]);
     if (result.rowCount === 0) throw new AppError('Product not found', 404);
     res.status(204).send(); // No Content
