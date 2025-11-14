@@ -73,7 +73,7 @@ const allowedOrigins = [
 
 // 1. Body parsers
 
-); //hook up front end API
+//hook up front end API
 const allowedOrigins = [
   "http://localhost:5173",
   /\.vercel\.app$/,  // allow ALL Vercel preview + production URLs
