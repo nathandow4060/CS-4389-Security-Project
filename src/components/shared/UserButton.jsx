@@ -13,13 +13,15 @@ export default function UserButton() {
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
+    dob: "",       // 👈 added
     password: "",
     confirm: "",
   });
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (!loginData.email || !loginData.password) return alert("Please fill out all fields");
+    if (!loginData.email || !loginData.password)
+      return alert("Please fill out all fields");
     setLoggedIn(true);
     setUser({ username: loginData.email.split("@")[0], email: loginData.email });
     setShowLogin(false);
@@ -27,11 +29,16 @@ export default function UserButton() {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    const { username, email, password, confirm } = registerData;
-    if (!username || !email || !password || !confirm) return alert("Please fill out all fields");
+    const { username, email, dob, password, confirm } = registerData;
+
+    if (!username || !email || !dob || !password || !confirm)
+      return alert("Please fill out all fields");
+
     if (password !== confirm) return alert("Passwords do not match");
+
+    // store dob on the user object as well
     setLoggedIn(true);
-    setUser({ username, email });
+    setUser({ username, email, dob });
     setShowRegister(false);
   };
 
@@ -57,12 +64,14 @@ export default function UserButton() {
                 className="w-full text-left px-4 py-2 hover:bg-gray-700"
                 onClick={() => {
                   navigate("/profile"); // Navigate to profile
-                  setOpen(false);       // Close dropdown
+                  setOpen(false); // Close dropdown
                 }}
               >
                 Profile
               </button>
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-700">Orders</button>
+              <button className="w-full text-left px-4 py-2 hover:bg-gray-700">
+                Orders
+              </button>
               <button
                 onClick={handleLogout}
                 className="w-full text-left px-4 py-2 text-red-400 hover:bg-gray-700"
@@ -73,13 +82,19 @@ export default function UserButton() {
           ) : (
             <>
               <button
-                onClick={() => { setShowLogin(true); setOpen(false); }}
+                onClick={() => {
+                  setShowLogin(true);
+                  setOpen(false);
+                }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700"
               >
                 Log In
               </button>
               <button
-                onClick={() => { setShowRegister(true); setOpen(false); }}
+                onClick={() => {
+                  setShowRegister(true);
+                  setOpen(false);
+                }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700"
               >
                 Register
@@ -99,21 +114,32 @@ export default function UserButton() {
                 type="email"
                 placeholder="Email"
                 value={loginData.email}
-                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, email: e.target.value })
+                }
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <input
                 type="password"
                 placeholder="Password"
                 value={loginData.password}
-                onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, password: e.target.value })
+                }
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <div className="flex justify-end gap-4">
-                <button type="button" onClick={() => setShowLogin(false)} className="px-4 py-2 bg-gray-600 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setShowLogin(false)}
+                  className="px-4 py-2 bg-gray-600 rounded-lg"
+                >
                   Cancel
                 </button>
-                <button type="submit" className="px-4 py-2 bg-indigo-600 rounded-lg text-white">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-indigo-600 rounded-lg text-white"
+                >
                   Log In
                 </button>
               </div>
@@ -126,41 +152,79 @@ export default function UserButton() {
       {showRegister && (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
           <div className="bg-gray-800 p-6 rounded-xl w-full max-w-sm">
-            <h2 className="text-2xl font-bold mb-4 text-indigo-400">Register</h2>
+            <h2 className="text-2xl font-bold mb-4 text-indigo-400">
+              Register
+            </h2>
             <form onSubmit={handleRegister} className="space-y-4">
               <input
                 type="text"
                 placeholder="Username"
                 value={registerData.username}
-                onChange={(e) => setRegisterData({ ...registerData, username: e.target.value })}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    username: e.target.value,
+                  })
+                }
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={registerData.email}
-                onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, email: e.target.value })
+                }
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
+
+              {/* Date of Birth */}
+              <input
+                type="date"
+                placeholder="Date of Birth"
+                value={registerData.dob}
+                onChange={(e) =>
+                  setRegisterData({ ...registerData, dob: e.target.value })
+                }
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 text-gray-100 focus:ring-2 focus:ring-indigo-500"
+              />
+
               <input
                 type="password"
                 placeholder="Password"
                 value={registerData.password}
-                onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    password: e.target.value,
+                  })
+                }
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <input
                 type="password"
                 placeholder="Confirm Password"
                 value={registerData.confirm}
-                onChange={(e) => setRegisterData({ ...registerData, confirm: e.target.value })}
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    confirm: e.target.value,
+                  })
+                }
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <div className="flex justify-end gap-4">
-                <button type="button" onClick={() => setShowRegister(false)} className="px-4 py-2 bg-gray-600 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setShowRegister(false)}
+                  className="px-4 py-2 bg-gray-600 rounded-lg"
+                >
                   Cancel
                 </button>
-                <button type="submit" className="px-4 py-2 bg-indigo-600 rounded-lg text-white">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-indigo-600 rounded-lg text-white"
+                >
                   Register
                 </button>
               </div>
