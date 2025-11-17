@@ -136,6 +136,10 @@ app.use('/products/:id/keys', productKeysRoute);
 const purchaseHistory = require('./routes/purchaseHistoryRoute');
 app.use('/user/:accountid/history', purchaseHistory);
 
+//Authentication routes
+const authentication = require('./routes/auth');
+app.use('/account', authentication);
+
 // Test routes for error handling
 app.get('/test-error', (req, res, next) => {
   next(new AppError('This is a test error - Bad Request', 400));
