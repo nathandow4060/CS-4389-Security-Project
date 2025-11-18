@@ -2,7 +2,7 @@ const API_BASE = '/api';
 
 export async function getProducts() {
   try {
-    const res = await fetch(`${API_BASE}/products`); // Fixed: added parentheses and proper template literal
+    const res = await fetch(`${API_BASE}/products`);
     if (!res.ok) {
       throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
     }
@@ -16,7 +16,7 @@ export async function getProducts() {
 
 export async function getProductById(id) {
   try {
-    const res = await fetch(`${API_BASE}/products/${id}`); // Fixed: added parentheses and proper template literal
+    const res = await fetch(`${API_BASE}/products/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch product with ID ${id}: ${res.status} ${res.statusText}`);
     }
@@ -28,6 +28,54 @@ export async function getProductById(id) {
   }
 }
 
+
+// Login and Signup Frontend Helper
+
+export async function login(email, password) {
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Login failed');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+}
+
+export async function signup(username, email, password) {
+  try {
+    const res = await fetch(`${API_BASE}/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Signup failed');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Signup error:', error);
+    throw error;
+  }
+}
 
 
 /*
