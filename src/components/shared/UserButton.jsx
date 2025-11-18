@@ -68,6 +68,18 @@ export default function UserButton() {
         }),
       });
 
+      // Check content type before parsing
+      const contentType = res.headers.get("content-type");
+      console.log("Login response status:", res.status);
+      console.log("Content-Type:", contentType);
+
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        console.error("Non-JSON response:", text);
+        alert("Server returned an invalid response. Please check the console.");
+        return;
+      }
+
       const data = await res.json();
 
       if (res.ok) {
@@ -80,7 +92,7 @@ export default function UserButton() {
       }
     } catch (err) {
       console.error("Login error:", err);
-      alert("An error occurred during login");
+      alert(`An error occurred during login: ${err.message}`);
     }
   };
 
@@ -109,6 +121,18 @@ export default function UserButton() {
         }),
       });
 
+      // Check content type before parsing
+      const contentType = res.headers.get("content-type");
+      console.log("Response status:", res.status);
+      console.log("Content-Type:", contentType);
+
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        console.error("Non-JSON response:", text);
+        alert("Server returned an invalid response. Please check the console and try again.");
+        return;
+      }
+
       const data = await res.json();
 
       if (res.ok) {
@@ -121,7 +145,7 @@ export default function UserButton() {
       }
     } catch (err) {
       console.error("Registration error:", err);
-      alert("An error occurred during registration");
+      alert(`An error occurred during registration: ${err.message}`);
     }
   };
 
