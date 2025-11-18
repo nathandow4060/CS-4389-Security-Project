@@ -136,6 +136,10 @@ app.use('/products/:id/keys', productKeysRoute);
 const purchaseHistory = require('./routes/purchaseHistoryRoute');
 app.use('/user/:accountid/history', purchaseHistory);
 
+// Profile routes (protected)
+const profileRoute = require('./routes/profileRoute');
+app.use('/user/profile', profileRoute);
+
 //Authentication routes
 const authentication = require('./routes/auth');
 app.use('/account', authentication);
