@@ -37,6 +37,9 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false, // Allow embedding for development
 }));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // 2. Additional security headers
 app.use((req, res, next) => {
   // Prevent clickjacking
@@ -62,28 +65,35 @@ app.use(raspMiddleware);
 console.log('🛡️  RASP security monitoring enabled');
 
 // ===== CORE MIDDLEWARE =====
+
+// 1. CORS Configuration
 const allowedOrigins = [
-  "https://cs-4389-security-project-5itx3sd6g-nate-dows-projects.vercel.app", // your Vercel app URL
-  "http://localhost:5173" // for local dev
+  "http://localhost:5173",
+  /\.vercel\.app$/,  // allow ALL Vercel preview + production URLs
 ];
 
-// 1. Body parsers
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-); //hook up front end API
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-); //hook up front end API
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow non-browser tools like Postman
+    if (!origin) return callback(null, true);
+
+    // Check allowed origins
+    const isAllowed = allowedOrigins.some(o =>
+      (typeof o === "string" && o === origin) ||
+      (o instanceof RegExp && o.test(origin))
+    );
+
+    if (isAllowed) {
+      return callback(null, true);
+    } else {
+      console.log("🔥 BLOCKED BY CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+}));
 
 // 2. Logging middleware
 if (NODE_ENV === 'development') {
@@ -105,25 +115,24 @@ app.get('/', (req, res) => {
   });
 });
 
-//Product Routes
+// Product Routes
 const productRoutes = require('./routes/productRoutes');
 app.use('/products', productRoutes);
-//Product Routes
 
 // Purchase Route: POST /api/purchase
 // Handles key allocation and purchase recording
 const purchaseRoutes = require('./routes/purchaseRoutes');
 app.use('/api/purchase', purchaseRoutes);
 
-//User Wishlist Routes
-//const userWishlistRoute = require('./routes/wishlistRoute');
-//app.use('/wishlist', userWishlistRoute);
+// User Wishlist Routes
+// const userWishlistRoute = require('./routes/wishlistRoute');
+// app.use('/wishlist', userWishlistRoute);
 
-//Product_Key route
+// Product_Key route
 const productKeysRoute = require('./routes/productKeysRoute');
 app.use('/products/:id/keys', productKeysRoute);
 
-//Purchase history routes
+// Purchase history routes
 const purchaseHistory = require('./routes/purchaseHistoryRoute');
 app.use('/user/:accountid/history', purchaseHistory);
 
@@ -157,10 +166,10 @@ app.use(globalErrorHandler);
 
 // ===== START SERVER =====
 app.listen(PORT, () => {
-  console.log(` GameVault Server running on port ${PORT}`);
-  console.log(` Environment: ${NODE_ENV}`);
-  console.log(` Logging Mode: ${NODE_ENV === 'development' ? 'Console + File' : 'File Only'}`);
-  console.log(` Started at: ${new Date().toISOString()}`);
+  console.log(`🚀 GameVault Server running on port ${PORT}`);
+  console.log(`📦 Environment: ${NODE_ENV}`);
+  console.log(`📝 Logging Mode: ${NODE_ENV === 'development' ? 'Console + File' : 'File Only'}`);
+  console.log(`⏰ Started at: ${new Date().toISOString()}`);
 });
 
 module.exports = app;

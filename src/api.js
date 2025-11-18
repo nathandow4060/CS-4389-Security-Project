@@ -1,25 +1,36 @@
-const API_BASE_URL =
-import.meta.env.VITE_API_URL || "http://localhost:3000"; //use the backend server or do local
+const API_BASE = '/api';
 
-
-
-//to use this API in a file use: import { *insertCommand* } from "../../api; 
 export async function getProducts() {
- //THIS IS EXAMPLE CODE AND HASN"T BEEN TESTETD
-  const res = await fetch(`${API_BASE_URL}/products`, {
-    credentials: "include",
-  });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
-}
-/* Add more commands for the frontend to backendas needed
-// Get one product by ID
-export async function getProductById(id) {
-  const res = await fetch(`${API_BASE_URL}/products/${id}`, { credentials: "include" });
-  if (!res.ok) throw new Error(`Failed to fetch product ${id}`);
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE}/products`); // Fixed: added parentheses and proper template literal
+    if (!res.ok) {
+      throw new Error(`Failed to fetch products: ${res.status} ${res.statusText}`);
+    }
+    const json = await res.json();
+    return Array.isArray(json.data) ? json.data : [];
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
 }
 
+export async function getProductById(id) {
+  try {
+    const res = await fetch(`${API_BASE}/products/${id}`); // Fixed: added parentheses and proper template literal
+    if (!res.ok) {
+      throw new Error(`Failed to fetch product with ID ${id}: ${res.status} ${res.statusText}`);
+    }
+    const json = await res.json();
+    return json.data || null;
+  } catch (error) {
+    console.error(`Error fetching product with ID ${id}:`, error);
+    return null;
+  }
+}
+
+
+
+/*
 // -------------------- AUTH --------------------
 export async function loginUser(email, password) {
   const res = await fetch(`${API_BASE_URL}/auth/login`, {
