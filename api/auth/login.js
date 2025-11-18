@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const backendUrl = process.env.VITE_API_URL + '/auth/login';
+  const backendUrl = process.env.VITE_API_URL + '/api/auth/login';
   
   console.log('Login request to:', backendUrl);
   
