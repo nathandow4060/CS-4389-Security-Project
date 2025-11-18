@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function UserButton() {
@@ -9,35 +9,127 @@ export default function UserButton() {
   const [showRegister, setShowRegister] = useState(false);
   const [user, setUser] = useState(null);
 
-  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [registerData, setRegisterData] = useState({
     username: "",
     email: "",
     password: "",
     confirm: "",
+    age: "",
   });
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (!loginData.email || !loginData.password) return alert("Please fill out all fields");
-    setLoggedIn(true);
-    setUser({ username: loginData.email.split("@")[0], email: loginData.email });
-    setShowLogin(false);
+  // Check for existing token on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchUserProfile(token);
+    }
+  }, []);
+
+  const fetchUserProfile = async (token) => {
+    try {
+      const res = await fetch("/api/user/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.data);
+        setLoggedIn(true);
+      } else {
+        // Token invalid, clear it
+        localStorage.removeItem("token");
+        setLoggedIn(false);
+        setUser(null);
+      }
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+      localStorage.removeItem("token");
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const { username, email, password, confirm } = registerData;
-    if (!username || !email || !password || !confirm) return alert("Please fill out all fields");
-    if (password !== confirm) return alert("Passwords do not match");
-    setLoggedIn(true);
-    setUser({ username, email });
-    setShowRegister(false);
+    if (!loginData.username || !loginData.password) {
+      return alert("Please fill out all fields");
+    }
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: loginData.username,
+          password: loginData.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        await fetchUserProfile(data.token);
+        setShowLogin(false);
+        setLoginData({ username: "", password: "" });
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("An error occurred during login");
+    }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const { username, email, password, confirm, age } = registerData;
+
+    if (!username || !email || !password || !confirm || !age) {
+      return alert("Please fill out all fields");
+    }
+    if (password !== confirm) {
+      return alert("Passwords do not match");
+    }
+
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          age: parseInt(age),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Registration successful! Please log in.");
+        setShowRegister(false);
+        setShowLogin(true);
+        setRegisterData({ username: "", email: "", password: "", confirm: "", age: "" });
+      } else {
+        alert(data.message || "Registration failed");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      alert("An error occurred during registration");
+    }
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     setLoggedIn(false);
     setUser(null);
+    navigate("/");
   };
 
   return (
@@ -56,13 +148,15 @@ export default function UserButton() {
               <button
                 className="w-full text-left px-4 py-2 hover:bg-gray-700"
                 onClick={() => {
-                  navigate("/profile"); // Navigate to profile
-                  setOpen(false);       // Close dropdown
+                  navigate("/profile");
+                  setOpen(false);
                 }}
               >
                 Profile
               </button>
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-700">Orders</button>
+              <button className="w-full text-left px-4 py-2 hover:bg-gray-700">
+                Orders
+              </button>
               <button
                 onClick={handleLogout}
                 className="w-full text-left px-4 py-2 text-red-400 hover:bg-gray-700"
@@ -73,13 +167,19 @@ export default function UserButton() {
           ) : (
             <>
               <button
-                onClick={() => { setShowLogin(true); setOpen(false); }}
+                onClick={() => {
+                  setShowLogin(true);
+                  setOpen(false);
+                }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700"
               >
                 Log In
               </button>
               <button
-                onClick={() => { setShowRegister(true); setOpen(false); }}
+                onClick={() => {
+                  setShowRegister(true);
+                  setOpen(false);
+                }}
                 className="w-full text-left px-4 py-2 hover:bg-gray-700"
               >
                 Register
@@ -96,10 +196,10 @@ export default function UserButton() {
             <h2 className="text-2xl font-bold mb-4 text-indigo-400">Login</h2>
             <form onSubmit={handleLogin} className="space-y-4">
               <input
-                type="email"
-                placeholder="Email"
-                value={loginData.email}
-                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                type="text"
+                placeholder="Username"
+                value={loginData.username}
+                onChange={(e) => setLoginData({ ...loginData, username: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <input
@@ -110,7 +210,11 @@ export default function UserButton() {
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <div className="flex justify-end gap-4">
-                <button type="button" onClick={() => setShowLogin(false)} className="px-4 py-2 bg-gray-600 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setShowLogin(false)}
+                  className="px-4 py-2 bg-gray-600 rounded-lg"
+                >
                   Cancel
                 </button>
                 <button type="submit" className="px-4 py-2 bg-indigo-600 rounded-lg text-white">
@@ -143,6 +247,13 @@ export default function UserButton() {
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <input
+                type="number"
+                placeholder="Age"
+                value={registerData.age}
+                onChange={(e) => setRegisterData({ ...registerData, age: e.target.value })}
+                className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
+              />
+              <input
                 type="password"
                 placeholder="Password"
                 value={registerData.password}
@@ -157,7 +268,11 @@ export default function UserButton() {
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 focus:ring-2 focus:ring-indigo-500"
               />
               <div className="flex justify-end gap-4">
-                <button type="button" onClick={() => setShowRegister(false)} className="px-4 py-2 bg-gray-600 rounded-lg">
+                <button
+                  type="button"
+                  onClick={() => setShowRegister(false)}
+                  className="px-4 py-2 bg-gray-600 rounded-lg"
+                >
                   Cancel
                 </button>
                 <button type="submit" className="px-4 py-2 bg-indigo-600 rounded-lg text-white">

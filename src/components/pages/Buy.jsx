@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext.jsx";
 
 export default function Buy() {
+  const navigate = useNavigate();
   const { cart, removeFromCart, removeAllFromCart, clearCart } = useCart();
   const [cardNumber, setCardNumber] = useState("");
   const [name, setName] = useState("");
@@ -36,8 +37,13 @@ export default function Buy() {
       return alert("Invalid card number");
     }
 
-    // Hardcoded until login is implemented
-    const accountId = 2;
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please log in to complete your purchase");
+      navigate("/"); // Redirect to home where they can log in
+      return;
+    }
 
     try {
       const confirmations = [];
@@ -45,19 +51,26 @@ export default function Buy() {
       for (const item of cart) {
         // Make one request per quantity
         for (let i = 0; i < item.quantity; i++) {
-          // Use the Vercel serverless function instead of hitting backend directly
           const res = await fetch(`/api/purchase`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`, // Add JWT token
             },
             body: JSON.stringify({
-              accountId,
               productId: item.id,
             }),
           });
 
           console.log("Purchase response status:", res.status);
+
+          // Handle authentication errors
+          if (res.status === 401 || res.status === 403) {
+            alert("Your session has expired. Please log in again.");
+            localStorage.removeItem("token");
+            navigate("/");
+            return;
+          }
 
           // Handle 204 No Content
           if (res.status === 204) {
