@@ -1,36 +1,44 @@
- apiauthsignup.js
+// api/auth/signup.js
 export default async function handler(req, res) {
-   Only allow POST requests
+  // Only allow POST requests
   if (req.method !== 'POST') {
-    return res.status(405).json({ message 'Method not allowed' });
+    return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const backendUrl = `${process.env.VITE_API_URL}authsignup`;
+  const backendUrl = process.env.VITE_API_URL + '/auth/signup';
+  
+  console.log('Signup request to:', backendUrl);
+  console.log('Request body:', req.body);
   
   try {
     const response = await fetch(backendUrl, {
-      method 'POST',
-      headers {
-        'Content-Type' 'applicationjson',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      body JSON.stringify(req.body),
+      body: JSON.stringify(req.body),
     });
     
+    console.log('Backend response status:', response.status);
+    
     if (!response.ok) {
-       Forward the error response from backend
-      const errorData = await response.json().catch(() = ({ 
-        message `Backend returned status ${response.status}` 
-      }));
+      // Forward the error response from backend
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { message: 'Backend returned status ' + response.status };
+      }
       return res.status(response.status).json(errorData);
     }
     
     const data = await response.json();
-    res.status(response.status).json(data);
+    return res.status(response.status).json(data);
   } catch (err) {
-    console.error('Error during signup', err);
-    res.status(500).json({ 
-      message 'Failed to connect to authentication service',
-      error err.message 
+    console.error('Error during signup:', err);
+    return res.status(500).json({ 
+      message: 'Failed to connect to authentication service',
+      error: err.message 
     });
   }
 }

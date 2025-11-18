@@ -5,7 +5,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const backendUrl = `${process.env.VITE_API_URL}/auth/login`;
+  const backendUrl = process.env.VITE_API_URL + '/auth/login';
+  
+  console.log('Login request to:', backendUrl);
   
   try {
     const response = await fetch(backendUrl, {
@@ -16,19 +18,24 @@ export default async function handler(req, res) {
       body: JSON.stringify(req.body),
     });
     
+    console.log('Backend response status:', response.status);
+    
     if (!response.ok) {
       // Forward the error response from backend
-      const errorData = await response.json().catch(() => ({ 
-        message: `Backend returned status ${response.status}` 
-      }));
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { message: 'Backend returned status ' + response.status };
+      }
       return res.status(response.status).json(errorData);
     }
     
     const data = await response.json();
-    res.status(response.status).json(data);
+    return res.status(response.status).json(data);
   } catch (err) {
     console.error('Error during login:', err);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       message: 'Failed to connect to authentication service',
       error: err.message 
     });
