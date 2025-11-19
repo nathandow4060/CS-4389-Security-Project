@@ -1,4 +1,3 @@
-// backend/services/manageAccounts.js
 const db = require('../db/db');
 
 const PGP_ENCRYPTION_KEY =
@@ -14,10 +13,10 @@ async function findUserByUsername(username) {
         SELECT 
             id,
             username,
-            pgp_sym_decrypt(password::bytea, $2::text)::text AS password,
+            pgp_sym_decrypt(password, $2::text)::text AS password,
             age,
             email
-        FROM ACCOUNT
+        FROM account
         WHERE username = $1
     `;
     const { rows } = await db.query(query, [username, PGP_ENCRYPTION_KEY]);
@@ -30,7 +29,7 @@ async function findUserByUsername(username) {
  */
 async function postUser({ username, password, age, email }) {
     const query = `
-        INSERT INTO ACCOUNT (username, password, age, email)
+        INSERT INTO account (username, password, age, email)
         VALUES ($1, pgp_sym_encrypt($2, $5::text), $3, $4)
         RETURNING id
     `;
@@ -39,4 +38,5 @@ async function postUser({ username, password, age, email }) {
 }
 
 module.exports = { findUserByUsername, postUser };
+
 
