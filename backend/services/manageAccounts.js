@@ -34,3 +34,5 @@ async function postUser({username, password, age, email}) {
     const { rows } = await db.query(query, [username, password, age, email, PGP_ENCRYPTION_KEY]);
     return rows[0];
 }
+
+module.exports = { findUserByUsername, postUser };
