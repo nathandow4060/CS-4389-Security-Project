@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { findUserByUsername, postUser } = require('../services/manageAccounts');
 
-const SECRET_KEY = process.env.JWT_SECRET || 'mysecretkey';
+const SECRET_KEY = process.env.JWT_SECRET
 
 function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

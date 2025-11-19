@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const backendUrl = `${process.env.VITE_API_URL}/api/user/profile`;
+  const backendUrl = `${process.env.VITE_API_URL}/api/user`;
   
   // Get user token from request headers
   const userToken = req.headers.authorization;
