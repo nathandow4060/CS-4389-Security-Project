@@ -1,4 +1,5 @@
 const db = require('../db/db');
+
 const PGP_ENCRYPTION_KEY =
   process.env.PGP_ENCRYPTION_KEY ||
   'c65ef18bd3a0183cedce4ff720f1f437d070194f916479d5874aef0964b62f29';
@@ -11,7 +12,7 @@ async function findUserByUsername(username) {
         SELECT 
             id,
             username,
-            pgp_sym_decrypt(password, $2::text)::text AS password,
+            pgp_sym_decrypt(decode(password, 'escape'), $2::text)::text AS password,
             age,
             email
         FROM ACCOUNT
@@ -28,7 +29,12 @@ async function findUserByUsername(username) {
 async function postUser({username, password, age, email}) {
     const query = `
         INSERT INTO ACCOUNT (username, password, age, email)
-        VALUES ($1, pgp_sym_encrypt($2, $5::text), $3, $4)
+        VALUES (
+            $1,
+            encode(pgp_sym_encrypt($2, $5::text), 'escape'),
+            $3,
+            $4
+        )
         RETURNING id
     `;
 
