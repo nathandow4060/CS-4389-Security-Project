@@ -72,7 +72,6 @@ exports.updateProduct = async (req, res, next) => {
     const payload = (req.body && typeof req.body === 'object') ? req.body : {};
     // Build a dynamic UPSERT that only sets provided fields
     const fields = [ //all fields that exist on product table
-      'digital_key',
       'name_of_product',
       'developer',
       'price',
@@ -111,7 +110,7 @@ exports.updateProduct = async (req, res, next) => {
       UPDATE product
       SET ${user_fields.join(', ')}
       WHERE id = $${values.length}
-      RETURNING id, digital_key, name_of_product, developer, price, image_url, description, esrb_rating
+      RETURNING id, name_of_product, developer, price, image_url, description, esrb_rating
     `;
 
     const result = await db.query(sql, values);

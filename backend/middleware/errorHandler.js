@@ -57,7 +57,7 @@ const globalErrorHandler = (err, req, res, next) => {
       });
     } else {
       // Programming error: don't leak details
-      console.error('ERROR 💥', err);
+      console.error('ERROR', err);
       res.status(500).json({
         status: 'error',
         message: 'Something went wrong. Please try again later.',

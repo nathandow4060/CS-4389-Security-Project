@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 
 // 4. RASP - Runtime Application Self-Protection
 app.use(raspMiddleware);
-console.log('🛡️  RASP security monitoring enabled');
+console.log('RASP security monitoring enabled');
 
 // ===== CORS CONFIGURATION =====
 const allowedOrigins = [
@@ -72,7 +72,7 @@ app.use(cors({
     if (isAllowed) {
       return callback(null, true);
     } else {
-      console.log("🔥 BLOCKED BY CORS:", origin);
+      console.log("BLOCKED BY CORS:", origin);
       return callback(new Error("Not allowed by CORS"));
     }
   },
@@ -84,7 +84,7 @@ app.use(cors({
 // ===== LOGGING MIDDLEWARE =====
 if (NODE_ENV === 'development') {
   app.use(devLogger);
-  console.log('🛠 Development logging enabled');
+  console.log('Development logging enabled');
 } else {
   app.use(prodLogger);
 }
@@ -111,11 +111,11 @@ app.use('/api/purchase', purchaseRoutes);
 
 // FIXED: Authentication routes - mounted at /api/auth instead of /account
 const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);  // ✅ Changed from '/account' to '/api/auth'
+app.use('/api/auth', authRoutes);  
 
 // FIXED: Profile routes - mounted at /api/user instead of /user/profile
 const profileRoute = require('./routes/profileRoute');
-app.use('/api/user', profileRoute);  // ✅ Changed from '/user/profile' to '/api/user'
+app.use('/api/user', profileRoute); 
 
 // Product Key routes
 const productKeysRoute = require('./routes/productKeysRoute');
@@ -158,10 +158,10 @@ app.use(globalErrorHandler);
 
 // ===== START SERVER =====
 app.listen(PORT, () => {
-  console.log(`🚀 GameVault Server running on port ${PORT}`);
-  console.log(`📦 Environment: ${NODE_ENV}`);
-  console.log(`📝 Logging Mode: ${NODE_ENV === 'development' ? 'Console + File' : 'File Only'}`);
-  console.log(`⏰ Started at: ${new Date().toISOString()}`);
+  console.log(`GameVault Server running on port ${PORT}`);
+  console.log(`Environment: ${NODE_ENV}`);
+  console.log(`Logging Mode: ${NODE_ENV === 'development' ? 'Console + File' : 'File Only'}`);
+  console.log(`Started at: ${new Date().toISOString()}`);
 });
 
 module.exports = app;

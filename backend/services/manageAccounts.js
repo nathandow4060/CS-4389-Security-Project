@@ -2,8 +2,7 @@
 const db = require('../db/db');
 
 const PGP_ENCRYPTION_KEY =
-  process.env.PGP_ENCRYPTION_KEY ||
-  'c65ef18bd3a0183cedce4ff720f1f437d070194f916479d5874aef0964b62f29';
+  process.env.PGP_ENCRYPTION_KEY;
 
 /**
  * Find user by username and decrypt password using pgp_sym_decrypt

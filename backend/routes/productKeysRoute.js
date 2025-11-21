@@ -1,6 +1,5 @@
 const express = require('express');
 const ctrl = require('../controllers/productKeysController');
-//const { authenticateToken } = require('../middleware/authMiddleware'); //loggedin user verification
 const router = express.Router({ mergeParams: true });
 
 router.get('/count', ctrl.getKeysCountById);//get COUNT of keys in stock for a productID

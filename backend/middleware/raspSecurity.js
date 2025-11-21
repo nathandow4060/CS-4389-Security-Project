@@ -36,7 +36,7 @@ const isIPBlocked = (ip) => {
 const blockIP = (ip, reason) => {
   blockedIPs.add(ip);
   securityLogger(
-    `🚫 BLOCKED IP: ${ip} - Reason: ${reason}`,
+    `BLOCKED IP: ${ip} - Reason: ${reason}`,
     'error'
   );
 
@@ -159,7 +159,7 @@ const raspMiddleware = (req, res, next) => {
   // Check if IP is blocked
   if (isIPBlocked(ip)) {
     securityLogger(
-      `🚫 BLOCKED REQUEST: ${ip} attempted to access ${method} ${url}`,
+      `BLOCKED REQUEST: ${ip} attempted to access ${method} ${url}`,
       'warning'
     );
     return res.status(403).json({
@@ -174,7 +174,7 @@ const raspMiddleware = (req, res, next) => {
   if (threats.length > 0) {
     // Log detected threats
     securityLogger(
-      `⚠️ ATTACK DETECTED: ${ip} - ${method} ${url}\n` +
+      `ATTACK DETECTED: ${ip} - ${method} ${url}\n` +
       `Threats: ${threats.map(t => `${t.type} in ${t.location}`).join(', ')}\n` +
       `Details: ${JSON.stringify(threats)}`,
       'error'
@@ -194,7 +194,7 @@ const raspMiddleware = (req, res, next) => {
 
     // Medium severity - warn but allow (for now)
     securityLogger(
-      `⚡ WARNING: ${ip} has ${attemptCount} failed attempts`,
+      `WARNING: ${ip} has ${attemptCount} failed attempts`,
       'warning'
     );
   }
@@ -224,7 +224,7 @@ const getSecurityStats = () => {
  */
 setInterval(() => {
   failedAttempts.clear();
-  securityLogger('🔄 RASP: Cleared failed attempts tracker', 'info');
+  securityLogger('RASP: Cleared failed attempts tracker', 'info');
 }, CONFIG.resetInterval);
 
 module.exports = {

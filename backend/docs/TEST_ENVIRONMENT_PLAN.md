@@ -63,7 +63,7 @@ curl "http://localhost:3000/products/1' OR '1'='1"
 
 **Expected:** Should return 400 Bad Request (blocked by validation)
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -80,7 +80,7 @@ curl -X POST http://localhost:3000/api/register \
 
 **Expected:** Input should be sanitized or rejected
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -95,7 +95,7 @@ psql -U admin -d cs4389_webstore -c "SELECT username, password FROM account LIMI
 
 **Expected:** Passwords should look like: `$2b$10$...` (bcrypt hash), NOT plain text
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -113,7 +113,7 @@ curl -I http://localhost:3000/
 - `X-Content-Type-Options: nosniff`
 - `Content-Security-Policy: ...`
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -130,7 +130,7 @@ curl -X POST http://localhost:3000/api/register \
 
 **Expected:** Should return 400 Bad Request with error message
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -149,7 +149,7 @@ curl http://localhost:3000/api/security/stats
 
 **Expected:** Attack should be logged, stats should show suspicious activity
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -164,7 +164,7 @@ curl http://localhost:3000/api/user/profile
 
 **Expected:** Should return 401 Unauthorized
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -183,7 +183,7 @@ curl http://localhost:3000/api/user/profile
 
 **Expected:** Form should not submit, show error messages
 
-**Result:** ✅ PASS / ❌ FAIL
+**Result:** PASS / FAIL
 
 ---
 
@@ -191,7 +191,7 @@ curl http://localhost:3000/api/user/profile
 
 ### Our Security Features
 
-**✅ Implemented:**
+** Implemented:**
 - Helmet security headers (S3)
 - RASP runtime protection (S4)
 - Input validation frontend (F11)
@@ -200,7 +200,7 @@ curl http://localhost:3000/api/user/profile
 - Error handling & logging
 - Parameterized SQL queries
 
-**📊 Test Coverage:**
+** Test Coverage:**
 - Backend: 20 unit tests
 - Frontend: 16 validation tests
 - Manual security tests: 8 test cases
@@ -258,12 +258,12 @@ Show blocked IPs and suspicious activity
 6. **Least Privilege** - Users only access their own data
 
 **OWASP Top 10 Coverage:**
-- A01: JWT authorization ✅
-- A02: bcrypt password hashing ✅
-- A03: SQL injection & XSS prevention ✅
-- A04: Helmet security headers ✅
-- A05: Generic error messages ✅
-- A07: Strong password requirements ✅
+- A01: JWT authorization
+- A02: bcrypt password hashing
+- A03: SQL injection & XSS prevention 
+- A04: Helmet security headers 
+- A05: Generic error messages 
+- A07: Strong password requirements 
 
 ---
 

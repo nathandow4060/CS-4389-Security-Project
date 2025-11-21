@@ -57,16 +57,6 @@ exports.postUserPurchaseHistory = async (req, res, next) => {
       productKey: productkey
     });
 
-    /*
-    const insert = await db.query(
-      `INSERT INTO user_purchase_history
-        (productid, accountid, productKey)
-       VALUES ($1,$2,$3)
-       RETURNING id, productid, accountid, productKey, date_of_purchase`,
-      [productId_valid, accountId, productkey]
-    );
-    */
-
     res.status(201).json({ status: 'success', data: {productId_valid, purchaseHistoryId: historyRecord.id}});
   } catch (err) {
     next(err);

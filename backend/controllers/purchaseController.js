@@ -80,18 +80,7 @@ exports.createPurchase = async (req, res, next) => {
     if (product.rowCount === 0) throw new AppError('Product not found', 404);
 
 
-    await client.query('COMMIT'); //ETHAN: Moved up here as other queries commented out
-    // Get one available digital key for this product
-    /* 
-    const keyResult = await client.query(
-      'SELECT key FROM product_key WHERE productid = $1 LIMIT 1',
-      [parsedProductId]
-    );
-    if (keyResult.rowCount === 0) {
-      throw new AppError('No digital keys available for this product', 409);
-    }
-    const allocatedKey = keyResult.rows[0].key;
-    */
+    await client.query('COMMIT'); 
     //ETHAN: CHANGED TO SERVICE such that purchase controller and productkey endpoints can access the same query
     //console.log("DEBUG parsedProductId: " + parsedProductId)
     const allocatedKey = await getFirstKeyEntry(
@@ -101,15 +90,6 @@ exports.createPurchase = async (req, res, next) => {
     console.log("DEBUG DECRYPTED KEY allocatedKey Var: " + allocatedKey)
 
     const purchasedAt = new Date().toISOString();
-    // Record the purchase in USER_PURCHASE_HISTORY
-    /*
-    const insertPurchase = await client.query(
-      `INSERT INTO user_purchase_history (productid, accountid, productkey, date_of_purchase)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id`,
-      [parsedProductId, parsedAccountId, allocatedKey, purchasedAt]
-    );
-    */
 
     //ETHAN: Changed to service such that purchase and purchase history routes can call the same query
     //Only create a record if a key is returned
@@ -123,22 +103,7 @@ exports.createPurchase = async (req, res, next) => {
 
     // Consume the allocated key so it cannot be reused
     // The service getFirstKeyEntry handleds key deletion automatically now
-    /* 
-    await client.query(
-      'DELETE FROM product_key WHERE productid = $1 AND key = $2',
-      [parsedProductId, allocatedKey]
-    );
-    */
 
-    // Optional cleanup: remove from wishlist if present
-    /* ETHAN: Commented out as wishlist is not fully implemented.
-    await client.query(
-      'DELETE FROM user_wishlist WHERE user_id = $1 AND product_id = $2',
-      [parsedAccountId, parsedProductId]
-    );
-    */
-
-    //The product has sold out of keys
     //The product has sold out of keys
 if (allocatedKey == null) {
   const product_payload = {

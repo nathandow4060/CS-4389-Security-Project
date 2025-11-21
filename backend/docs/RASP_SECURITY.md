@@ -133,7 +133,7 @@ curl http://localhost:3000/api/security/stats
 
 All security events are logged to `backend/logs/error.log`:
 ```
-[2025-11-13T03:30:48.692Z] [ERROR] ⚠️ ATTACK DETECTED: ::1 - GET /products/1' OR '1'='1
+[2025-11-13T03:30:48.692Z] [ERROR] ATTACK DETECTED: ::1 - GET /products/1' OR '1'='1
 Threats: SQL_INJECTION in URL_PARAM
 Details: [{"type":"SQL_INJECTION","location":"URL_PARAM","key":"id","value":"1' OR '1'='1"}]
 ```
