@@ -91,6 +91,22 @@ VALUES (1, pgp_sym_encrypt('E1234', 'b3fe0039a712cb658cc4477aa129d142c3352918de6
 		(1, pgp_sym_encrypt('M23R5', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
 		(2, pgp_sym_encrypt('K3467', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7'));
 
+--more product KEYSINSERT INTO product_key (productid, key)
+INSERT INTO product_key (productid, key)
+VALUES (3, pgp_sym_encrypt('E2334', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(3, pgp_sym_encrypt('J430', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(4, pgp_sym_encrypt('H890', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(4, pgp_sym_encrypt('H990', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(5, pgp_sym_encrypt('B090', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(5, pgp_sym_encrypt('A890', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(6, pgp_sym_encrypt('H110', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(6, pgp_sym_encrypt('C570', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(7, pgp_sym_encrypt('L990', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(7, pgp_sym_encrypt('D190', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(8, pgp_sym_encrypt('Z770', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(8, pgp_sym_encrypt('P000', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7')),
+(8, pgp_sym_encrypt('L123', 'b3fe0039a712cb658cc4477aa129d142c3352918de6dd010b6db7'));
+
 --VIEW TABLE RECORDS
 SELECT id, username, pgp_sym_decrypt(password, 'c65ef18bd3a0183cedce4ff720f1f437d070194f916479d5874aef0964b62f29') as password, age, email FROM account;
  --View product AND assciated KEYS
