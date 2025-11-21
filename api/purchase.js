@@ -1,28 +1,34 @@
-// api/purchase.js - Fixed version
+// api/purchase.js - FIXED to forward user JWT token
 export default async function handler(req, res) {
-  // Only allow POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
-  const backendUrl = `${process.env.VITE_API_URL}/api/purchase`; // Fixed: added /api
+  const backendUrl = `${process.env.VITE_API_URL}/api/purchase`;
   const username = process.env.BACKEND_ADMIN_USER;
   const password = process.env.BACKEND_ADMIN_PASS;
   
-  // Fixed: proper template literal
-  const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
+  // Basic auth for backend access
+  const basicAuth = "Basic " + Buffer.from(`${username}:${password}`).toString("base64");
+  
+  // Get user's JWT token from request
+  const userToken = req.headers.authorization;
+  
+  if (!userToken) {
+    return res.status(401).json({ error: "Authentication required. Please log in." });
+  }
 
   try {
     const response = await fetch(backendUrl, {
       method: "POST",
       headers: {
-        "Authorization": authHeader,
+        "Authorization": userToken,  // Forward user's JWT token (Bearer token)
         "Content-Type": "application/json",
+        "X-Admin-Auth": basicAuth,   // Send admin auth as custom header if needed
       },
-      body: JSON.stringify(req.body), // Fixed: JSON.stringify the body
+      body: JSON.stringify(req.body),
     });
 
-    // Handle non-JSON responses (like 204 No Content)
     if (response.status === 204) {
       return res.status(204).end();
     }

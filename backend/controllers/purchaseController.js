@@ -26,7 +26,7 @@ function buildConfirmation({ purchaseId, accountId, product, productKey, purchas
 }
 
 // POST /api/purchase
-// Body: { accountId: number, productId: number }
+// Body: { productId: number } (accountId comes from JWT token via authenticateToken middleware)
 // Notes:
 // - Ensures account and product exist
 // - Pulls one available key from PRODUCT_KEY for the product
@@ -36,18 +36,30 @@ function buildConfirmation({ purchaseId, accountId, product, productKey, purchas
 exports.createPurchase = async (req, res, next) => {
   const client = await db.connect();
   try {
-    const { accountId, productId } = req.body || {};
-    const parsedAccountId = Number(accountId);
+    // Get accountId from JWT token (set by authenticateToken middleware)
+    // This ensures users can only purchase for their own account
+    const accountIdFromToken = req.user?.accountId || req.user?.id;
+    if (!accountIdFromToken) {
+      throw new AppError('User account information not found in token', 403);
+    }
+    
+    const { productId } = req.body || {};
+    const parsedAccountId = Number(accountIdFromToken);
     const parsedProductId = Number(productId);
     if (
   !parsedAccountId ||
   Number.isNaN(parsedAccountId) ||
-  parsedAccountId <= 0 ||
+  parsedAccountId <= 0
+) {
+  throw new AppError('Invalid user account information', 403);
+}
+
+    if (
   !parsedProductId ||
   Number.isNaN(parsedProductId) ||
   parsedProductId <= 0
 ) {
-  throw new AppError('Invalid accountId or productId', 400);
+  throw new AppError('Invalid productId', 400);
 }
 
     // Start transaction to ensure atomic allocation and recording

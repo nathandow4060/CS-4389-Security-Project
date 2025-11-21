@@ -1,5 +1,4 @@
-// server.js - Updated with error handling and logging middleware
-// Note for TEAM: launch with npm run devstart
+// server.js - Fixed auth route mounting
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -12,12 +11,12 @@ const { raspMiddleware } = require('./middleware/raspSecurity');
 const { devLogger, prodLogger, requestLogger } = require('./middleware/logger');
 const { notFoundHandler, globalErrorHandler, AppError } = require('./middleware/errorHandler');
 
-// ===== IMPORT ROUTES =====
-
 // ===== INITIALIZE APP =====
 const app = express();
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+// ===== SECURITY MIDDLEWARE =====
 
 // 1. Helmet - Core security headers
 app.use(helmet({
@@ -34,50 +33,37 @@ app.use(helmet({
       upgradeInsecureRequests: NODE_ENV === 'production' ? [] : null,
     },
   },
-  crossOriginEmbedderPolicy: false, // Allow embedding for development
+  crossOriginEmbedderPolicy: false,
 }));
 
+// 2. Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 2. Additional security headers
+// 3. Additional security headers
 app.use((req, res, next) => {
-  // Prevent clickjacking
   res.setHeader('X-Frame-Options', 'DENY');
-  
-  // Prevent MIME sniffing
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  
-  // XSS Protection (legacy browsers)
   res.setHeader('X-XSS-Protection', '1; mode=block');
-  
-  // Referrer policy
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
-  // Permissions policy
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  
   next();
 });
 
-// 3. RASP - Runtime Application Self-Protection
+// 4. RASP - Runtime Application Self-Protection
 app.use(raspMiddleware);
 console.log('🛡️  RASP security monitoring enabled');
 
-// ===== CORE MIDDLEWARE =====
-
-// 1. CORS Configuration
+// ===== CORS CONFIGURATION =====
 const allowedOrigins = [
   "http://localhost:5173",
-  /\.vercel\.app$/,  // allow ALL Vercel preview + production URLs
+  /\.vercel\.app$/,
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow non-browser tools like Postman
     if (!origin) return callback(null, true);
 
-    // Check allowed origins
     const isAllowed = allowedOrigins.some(o =>
       (typeof o === "string" && o === origin) ||
       (o instanceof RegExp && o.test(origin))
@@ -95,14 +81,14 @@ app.use(cors({
   credentials: true,
 }));
 
-// 2. Logging middleware
+// ===== LOGGING MIDDLEWARE =====
 if (NODE_ENV === 'development') {
-  app.use(devLogger); // Console logging with colors
+  app.use(devLogger);
   console.log('🛠 Development logging enabled');
 } else {
-  app.use(prodLogger); // File logging only
+  app.use(prodLogger);
 }
-app.use(requestLogger); // Security logging for all requests
+app.use(requestLogger);
 
 // ===== ROUTES =====
 
@@ -119,16 +105,19 @@ app.get('/', (req, res) => {
 const productRoutes = require('./routes/productRoutes');
 app.use('/products', productRoutes);
 
-// Purchase Route: POST /api/purchase
-// Handles key allocation and purchase recording
+// Purchase Routes
 const purchaseRoutes = require('./routes/purchaseRoutes');
 app.use('/api/purchase', purchaseRoutes);
 
-// User Wishlist Routes
-// const userWishlistRoute = require('./routes/wishlistRoute');
-// app.use('/wishlist', userWishlistRoute);
+// FIXED: Authentication routes - mounted at /api/auth instead of /account
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);  // ✅ Changed from '/account' to '/api/auth'
 
-// Product_Key route
+// FIXED: Profile routes - mounted at /api/user instead of /user/profile
+const profileRoute = require('./routes/profileRoute');
+app.use('/api/user', profileRoute);  // ✅ Changed from '/user/profile' to '/api/user'
+
+// Product Key routes
 const productKeysRoute = require('./routes/productKeysRoute');
 app.use('/products/:id/keys', productKeysRoute);
 
@@ -136,12 +125,15 @@ app.use('/products/:id/keys', productKeysRoute);
 const purchaseHistory = require('./routes/purchaseHistoryRoute');
 app.use('/user/:accountid/history', purchaseHistory);
 
-// Test routes for error handling
+// User Wishlist Routes (commented out - not implemented)
+// const userWishlistRoute = require('./routes/wishlistRoute');
+// app.use('/wishlist', userWishlistRoute);
+
+// ===== TEST ROUTES =====
 app.get('/test-error', (req, res, next) => {
   next(new AppError('This is a test error - Bad Request', 400));
 });
 
-// Test programming crash (500)
 app.get('/test-crash', (req, res) => {
   throw new Error('Simulated server crash for testing!');
 });

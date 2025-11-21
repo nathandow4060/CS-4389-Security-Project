@@ -2,11 +2,13 @@
 // POST /api/purchase → create a new simulated purchase
 const express = require('express');
 const { createPurchase } = require('../controllers/purchaseController');
+const { authenticateToken } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Body: { accountId, productId }
-router.post('/', createPurchase);
+// Body: { productId } (accountId comes from JWT token)
+// Protected route: requires JWT authentication and RBAC authorization
+router.post('/', authenticateToken, createPurchase);
 
 module.exports = router;
 
