@@ -1,8 +1,8 @@
 # CS-4389-Security-Project
+## About Us
 We are developing a secure digital e-commerce web application for PC games, inspired by platforms like Steam. Users can register, browse a catalog of games, view detailed game pages, and purchase titles securely. 
-  
-Next steps: We need to add a lot more pages for the front end, create the initial database, test cloud deployment, test the API integration, and ensure everything is connected/runs smoothly.  
-  
+
+Developed on:  
 OS: Windows 10/11, Mac, Linux  
 Editor: VSCode 
 
@@ -14,26 +14,27 @@ npx tailwindcss init -p
 BACKEND  
 pg, express, dotenv, cors, morgan, nodemon  
 
-## How to run front-end code: 
-1. Navigate to the root folder of the main branch on the repository
-2. In your code editor of chioce run: npm install  
-3. Then run: npm run dev  
+## How to Access the website:
+View our site at the following address: https://cs-4389-security-project.vercel.app  
+  
+### Notes about product stock:  
+Battlefield 6                -  0 keys in stock  
+Eldin Ring                   -  2 keys in stock  
+Starfield                    -  2 keys in stock  
+Spider man 2                 -  2 keys in stock  
+Zelda Tears of the kingdom   -  1 key in stock  
+Cyberpunk 2077               -  3 keys in stock  
+  
+## How to access backend database:  
+If you want to access our database to view the records, access it with the following credentials  
 
-Commands we used:  
-npm install react-router-dom  
-npm install -D tailwindcss@3 postcss autoprefixer  
-npx tailwindcss init -p  
-Next steps: We need to add a lot more pages for the front end, create the initial database, test cloud deployment, test the API integration, and ensure everything is connected/runs smoothly.  
+1. Our database used postgreSQL so make sure you have this installed  
+2. install pgadmin4 or use the commandline if you are familiar with it  
+3. setup access to the server with the following credentials:  
+  a. Database: cs4389_webstore  
+  b. Host name/address: dpg-d4240v2li9vc7381ulf0-a.ohio-postgres.render.com  
+  c. Port: 5432  
+  d. Username: admin  
+  e. Password: 18BzeQ2yuOP96342!
 
-## How to run backend code:
-1. Navigate to the backend folder of the repository in your code editor of choice
-2. Install JS dependencies pg, express, dotenv, cors, morgan, nodemon
-3. Run: npm run devstart
-4. Navigate to http://localhost:5000 to view the backend running in your browser
-
-There is still much to implement here. This is just the framework of the backend system setup.
-
-
-The current backend server url is: https://gamevault-backend-a1ce.onrender.com
-/to use this API in a file use: import { *insertCommand* } from "../../api; 
-
+From here you shold be able to see all the records in our render hosted postgres database.
