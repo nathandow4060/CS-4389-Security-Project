@@ -1,3 +1,4 @@
+--AUTHOR: Ethan McDonell
 CREATE ROLE admin LOGIN PASSWORD --PASSWORD_HERE; --insert password here from discord
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin;
 GRANT USAGE, SELECT ON SEQUENCE public.product_id_seq, public.user_wishlist_id_seq, public.user_purchase_history_id_seq TO admin;

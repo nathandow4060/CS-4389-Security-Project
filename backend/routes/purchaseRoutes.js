@@ -1,3 +1,4 @@
+//AUTHOR: Alp Bayrak
 // Routes for purchase operations
 // POST /api/purchase → create a new simulated purchase
 const express = require('express');

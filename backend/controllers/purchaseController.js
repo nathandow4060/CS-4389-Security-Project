@@ -1,3 +1,4 @@
+//AUTHOR: Alp Bayrak, Ethan McDonell, Nathan Dow
 // Controller for handling simulated purchases
 // Usage: POST /api/purchase with body { accountId: number, productId: number }
 // Behavior: Allocates a digital key for the product, records the transaction,

@@ -1,3 +1,4 @@
+//AUTHOR: Alp Bayrak
 // routes/auth.js
 //import express from 'express';
 const express = require('express');

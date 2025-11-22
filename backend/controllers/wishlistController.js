@@ -1,3 +1,5 @@
+//AUTHOR: Ethan McDonell
+//WIP This file was started but not finished due to time constraints
 const db = require('../db/db');
 const { AppError } = require('../middleware/errorHandler');
 

@@ -1,3 +1,4 @@
+//AUTHOR: Nathan Dow, Alp Bayrak, Ethan McDonell
 // backend/services/manageAccounts.js
 const db = require('../db/db');
 

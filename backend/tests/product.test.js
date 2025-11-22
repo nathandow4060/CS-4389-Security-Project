@@ -1,3 +1,4 @@
+//AUTHOR: Ahmet Koc
 // tests/products.test.js
 const request = require('supertest');
 const { expect } = require('chai');

@@ -1,3 +1,4 @@
+//AUTHOR: Ahmet Koc
 // tests/errorHandler.test.js
 const { expect } = require('chai');
 const { AppError, notFoundHandler, globalErrorHandler } = require('../middleware/errorHandler');

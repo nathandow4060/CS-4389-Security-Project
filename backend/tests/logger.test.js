@@ -1,3 +1,4 @@
+//AUTHOR: Ahmet Koc
 // tests/logger.test.js
 const { expect } = require('chai');
 const fs = require('fs');

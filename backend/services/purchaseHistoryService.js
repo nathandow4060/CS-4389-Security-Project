@@ -1,3 +1,4 @@
+//AUTHOR: Ethan McDonell
 const db = require('../db/db');
 
 async function createPurchaseHistoryEntry({ accountId, productId, productKey }) {

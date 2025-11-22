@@ -1,3 +1,4 @@
+//AUTHOR: Alp Bayrak
 const jwt = require('jsonwebtoken');
 
 /**

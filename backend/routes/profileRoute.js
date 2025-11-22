@@ -1,3 +1,4 @@
+//AUTHOR: Alp Bayrak
 const express = require('express');
 const ctrl = require('../controllers/profileController');
 const { authenticateToken } = require('../middleware/authMiddleware');

@@ -1,3 +1,4 @@
+//AUTHOR: Ahmet Koc
 // middleware/errorHandler.js
 const { securityLogger } = require('./logger');
 

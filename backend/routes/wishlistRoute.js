@@ -1,3 +1,5 @@
+//AUTHOR: Ethan McDonell
+//WIP Not fully implemented. Dropped due to time constraints
 const express = require('express');
 const ctrl = require('../controllers/wishlistController');
 

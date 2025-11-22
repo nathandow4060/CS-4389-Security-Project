@@ -1,3 +1,4 @@
+//AUTHOR: Nathan Dow, Alp Bayrak
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { findUserByUsername, postUser } = require('../services/manageAccounts');

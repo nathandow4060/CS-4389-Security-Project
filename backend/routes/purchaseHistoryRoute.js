@@ -1,3 +1,4 @@
+//AUTHOR: Ethan McDonell
 const express = require('express');
 const ctrl = require('../controllers/purchaseHistoryController');
 const { authenticateToken, authorizeUser } = require('../middleware/authMiddleware');

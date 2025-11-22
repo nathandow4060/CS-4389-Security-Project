@@ -1,3 +1,4 @@
+//AUTHOR: Ethan McDonell
 // /routes/productRoutes.js
 const express = require('express');
 const ctrl = require('../controllers/productsController');
