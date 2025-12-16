@@ -34,7 +34,5 @@ If you want to access our database to view the records, access it with the follo
   a. Database: cs4389_webstore  
   b. Host name/address: dpg-d4240v2li9vc7381ulf0-a.ohio-postgres.render.com  
   c. Port: 5432  
-  d. Username: admin  
-  e. Password: 18BzeQ2yuOP96342!
 
 From here you shold be able to see all the records in our render hosted postgres database.
